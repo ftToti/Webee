@@ -1,0 +1,9 @@
+<h2>すべての依頼</h2>
+
+<% @requests.each do |r| %>
+	<div>
+		<%= link_to request_path(r) do %>
+			<%= r.title %>
+		<% end %>
+	</div>
+<% end %>

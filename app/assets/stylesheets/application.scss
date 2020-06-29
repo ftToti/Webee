@@ -13,3 +13,20 @@
  *= require_tree .
  *= require_self
  */
+// Custom bootstrap variables must be set or imported *before* bootstrap.
+@import "bootstrap";
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+header {
+	padding: 1em 3em;
+	background-color: rgba(0,0,0,0.5);
+}
+
+header a {
+	margin: 0 1em;
+	color: white;
+}

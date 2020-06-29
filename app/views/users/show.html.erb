@@ -1,0 +1,12 @@
+<!-- <ユーザー詳細> -->
+<div class="col-9">
+	<div class="profile_box", style="width: 90%; height: 500px;">
+		<%= attachment_image_tag @user, :profile_image, fallback: 'no_image.jpg', size:'200x200', style: 'border-radius: 50%;' %>
+		<%= @user.name %>
+	</div>
+	<%= link_to 'プロフィールを編集する', edit_user_path %>
+</div>
+<!-- <> -->
+
+<div class="col-3">
+</div>

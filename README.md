@@ -32,3 +32,5 @@ https://docs.google.com/spreadsheets/d/1hQZNCEjAyqZlcXRdAcPQJRIh-Wfgmr37Rag6sbGU
 https://drive.google.com/file/d/1wiEW83mbY-iax15PdhMCK0vAcnXQhRqT/view?usp=sharing
 ### ワイヤーフレーム
 https://drive.google.com/file/d/12D3IMDg4FFw1abi2Rh88vJB9JsHF3vmW/view?usp=sharing
+
+プロフィール編集から使えるスキル・得意なスキル作成

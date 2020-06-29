@@ -1,0 +1,47 @@
+<h2>この内容で依頼を投稿します</h2>
+
+<%= form_with model: @request, local: true do |f| %>
+<table class="table">
+	<tr>
+		<th><%= f.label :category %></th>
+		<td><%= @request.request_genre.category %></td>
+		<%= f.hidden_field :request_genre_id, :value => @request.request_genre.id %>
+	</tr>
+	<tr>
+		<th><%= f.label :title %></th>
+		<td><%= @request.title %></td>
+		<%= f.hidden_field :title, :value => @request.title %>
+	</tr>
+	<tr>
+		<th><%= f.label :content %></th>
+		<td><%= @request.content %></td>
+		<%= f.hidden_field :content, :value => @request.content %>
+	</tr>
+	<tr>
+		<th><%= f.label :necessary %></th>
+		<td><%= params[:necessary][:skill_ids] %></td>
+		<%= hidden_field :necessary, :value => params[:necessary][:skill_ids] %>
+	</tr>
+	<tr>
+		<th><%= f.label :reward %></th>
+		<td><%= @request.reward %></td>
+		<%= f.hidden_field :reward, :value => @request.reward %>
+	</tr>
+	<tr>
+		<th><%= f.label :recruiment_end %></th>
+		<td><%= @request.recruiment_end %></td>
+		<%= f.hidden_field :recruiment_end, :value => @request.recruiment_end %>
+	</tr>
+	<tr>
+		<th><%= f.label :delivery_date %></th>
+		<td><%= @request.delivery_date %></td>
+		<%= f.hidden_field :delivery_date, :value => @request.delivery_date %>
+	</tr>
+	<tr>
+		<th><%= f.label :recruiment_max %></th>
+		<td><%= @request.recruiment_max %></td>
+		<%= f.hidden_field :recruiment_max, :value => @request.recruiment_max %>
+	</tr>
+</table>
+<%= f.submit %>
+<% end %>

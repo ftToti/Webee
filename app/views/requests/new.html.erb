@@ -1,0 +1,42 @@
+<%= form_with model: @request, url: requests_check_path, method: :post, local: true do |f| %>
+<table class="table">
+	<tr>
+		<th><%= f.label :category %></th>
+		<td>
+			<% RequestGenre.all.each do |genre| %>
+				<%= f.radio_button :request_genre_id, genre.id %>
+				<%= f.label genre.category %>
+			<% end %>
+		</td>
+	</tr>
+	<tr>
+		<th><%= f.label :title %></th>
+		<td><%= f.text_field :title %></td>
+	</tr>
+	<tr>
+		<th><%= f.label :content %></th>
+		<td><%= f.text_area :content %></td>
+	</tr>
+	<tr>
+		<th><%= f.label :necessary %></th>
+		<td><%= collection_check_boxes(:necessary, :skill_ids, Skill.all, :id, :item, include_hidden: false) %></td>
+	</tr>
+	<tr>
+		<th><%= f.label :reward %></th>
+		<td><%= f.text_field :reward %></td>
+	</tr>
+	<tr>
+		<th><%= f.label :recruiment_end %></th>
+		<td><%= f.datetime_field :recruiment_end %></td>
+	</tr>
+	<tr>
+		<th><%= f.label :delivery_date %></th>
+		<td><%= f.datetime_field :delivery_date %></td>
+	</tr>
+	<tr>
+		<th><%= f.label :recruiment_max %></th>
+		<td><%= f.number_field :recruiment_max %></td>
+	</tr>
+</table>
+<%= f.submit %>
+<% end %>

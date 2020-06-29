@@ -10,6 +10,25 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header class="d-flex align-items-center">
+      <%= link_to '#', class: 'title' do %>
+        <h1>Web pro</h1>
+      <% end %>
+        <%= link_to 'マイページ', user_path(current_user) %>
+        <%= link_to '仕事をさがす', requests_path %>
+        <%= link_to 'ユーザー一覧', users_path %>
+        <%= link_to '仕事を依頼する', new_request_path %>
+        <% if user_signed_in? %>
+          <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
+          <%= current_user.name %>
+        <% else %>
+          <%= link_to 'ログイン', new_user_session_path %>
+        <% end %>
+        <%= link_to '', '#', class: 'btn btn-light rounded-circle ml-auto', style: 'width: 2em; height: 2em;' %>
+        <%= link_to '', '#', class: 'btn btn-light rounded-circle', style: 'width: 2em; height: 2em;' %>
+    </header>
+    <div class="container-fluid">
+      <%= yield %>
+    </div>
   </body>
 </html>

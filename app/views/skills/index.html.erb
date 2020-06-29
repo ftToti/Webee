@@ -1,0 +1,27 @@
+<h1>skills_index</h1>
+<%= link_to '管理者トップ', admins_top_path %>
+<%= link_to '依頼ジャンル一覧', request_genres_path %>
+<%= link_to 'スキル一覧', skills_path %>
+<%= link_to 'ログアウト', destroy_admin_session_path, method: :delete %>
+
+<%= form_with model: @skill, local: true do |f| %>
+	<%= f.text_field :item %>
+	<%= f.submit '保存する', class: 'btn btn-sm btn-primary' %>
+<% end %>
+
+<table>
+	<thead>
+		<tr>
+			<th>カテゴリ</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @skills.each do |skill| %>
+			<tr>
+				<td><%= skill.item %></td>
+				<td><%= link_to '削除', skill_path(skill), method: :delete %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
