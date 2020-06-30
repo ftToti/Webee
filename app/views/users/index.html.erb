@@ -1,5 +1,5 @@
 <!-- <プロフィール一覧> -->
-<div class="col-9 d-flex flex-wrap">
+<div class="d-flex flex-wrap">
 	<% @users.each do |u| %>
 		<div class="profile_box">
 			<%= attachment_image_tag u, :profile_image, fallback: 'no_image.jpg', size:'100x100', style: 'border-radius: 50%;' %>
@@ -16,8 +16,4 @@
 			<%= u.created_at %>
 		</div>
 	<% end %>
-</div>
-<!-- <> -->
-
-<div class="col-3">
 </div>

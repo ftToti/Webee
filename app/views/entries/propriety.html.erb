@@ -1,3 +1,9 @@
+<h3>応募しているユーザー</h3>
+<div class="profile_box", style="width: 90%; height: 500px;">
+	<%= attachment_image_tag @user, :profile_image, fallback: 'no_image.jpg', size:'200x200', style: 'border-radius: 50%;' %>
+	<%= @user.name %>
+</div>
+<h3>応募されている依頼</h3>
 <div>
 	<h2><%= @request.title %></h2>
 	<div>
@@ -33,13 +39,7 @@
 	<h3>依頼詳細</h3>
 	<%= @request.content %>
 
-	<%= link_to '応募者一覧へ', entries_path(id: @request, version: 'request') %>
-
-	<h3>応募フォーム</h3>
-	<%= form_with model: @entry, url: entries_path, method: :post, local: true do |f| %>
-		<%= f.text_area :message %>
-		<%= f.hidden_field :request_id, :value => params[:id] %>
-		<%= f.submit '応募する' %>
-	<% end %>
-
 </div>
+
+<%= link_to '参加を拒否する', entries_selection_path(id: @entry, version: 'deny'), method: :post, class: 'btn btn-danger' %>
+<%= link_to '参加を許可する', entries_selection_path(id: @entry, version: 'allow'), method: :post, class: 'btn btn-primary' %>

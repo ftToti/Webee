@@ -1,12 +1,11 @@
 <!-- <ユーザー詳細> -->
-<div class="col-9">
+<div>
 	<div class="profile_box", style="width: 90%; height: 500px;">
 		<%= attachment_image_tag @user, :profile_image, fallback: 'no_image.jpg', size:'200x200', style: 'border-radius: 50%;' %>
 		<%= @user.name %>
 	</div>
 	<%= link_to 'プロフィールを編集する', edit_user_path %>
-</div>
-<!-- <> -->
-
-<div class="col-3">
+	<%= link_to '応募している依頼一覧へ', entries_path(id: @user, version: 'user') %>
+	<%= link_to '参加している依頼一覧へ', participants_path(id: @user, version: 'user') %>
+	<%= link_to '募集している依頼一覧へ', requests_path(id: @user, version: 'wanted') %>
 </div>

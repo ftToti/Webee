@@ -1,6 +1,11 @@
 class RequestsController < ApplicationController
 	def index
-		@requests = Request.all
+		if params[:version] == 'wanted'
+			@user = User.find(params[:id])
+			@requests = @user.requests
+		else
+			@requests = Request.all
+		end
 	end
 
 	def new
@@ -15,14 +20,17 @@ class RequestsController < ApplicationController
 		@request = Request.new(request_params)
 		@request.user_id = current_user.id
 		if @request.save!
-			# 応募に必要なスキルを作成する
-			# SkillSet.create!(necessary: @request.id, skill_id: params[:necessary])
+			params[:necessary].each do |n|
+				SkillSet.create!(necessary_id: @request.id, skill_id: n)
+			end
 			redirect_to request_path(@request)
 		end
 	end
 
 	def show
 		@request = Request.find(params[:id])
+		@skill = @request.necessary
+		@entry = Entry.new
 	end
 
 	def edit

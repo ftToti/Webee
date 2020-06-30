@@ -20,7 +20,7 @@
 	<tr>
 		<th><%= f.label :necessary %></th>
 		<td><%= params[:necessary][:skill_ids] %></td>
-		<%= hidden_field :necessary, :value => params[:necessary][:skill_ids] %>
+		<%= hidden_field_tag :necessary, params[:necessary][:skill_ids] %>
 	</tr>
 	<tr>
 		<th><%= f.label :reward %></th>

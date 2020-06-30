@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2020_06_28_184759) do
 
   create_table "entries", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "request", null: false
+    t.integer "request_id", null: false
     t.string "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

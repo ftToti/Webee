@@ -14,11 +14,11 @@
       <%= link_to '#', class: 'title' do %>
         <h1>Web pro</h1>
       <% end %>
-        <%= link_to 'マイページ', user_path(current_user) %>
         <%= link_to '仕事をさがす', requests_path %>
         <%= link_to 'ユーザー一覧', users_path %>
         <%= link_to '仕事を依頼する', new_request_path %>
         <% if user_signed_in? %>
+          <%= link_to 'マイページ', user_path(current_user) %>
           <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
           <%= current_user.name %>
         <% else %>
@@ -28,7 +28,22 @@
         <%= link_to '', '#', class: 'btn btn-light rounded-circle', style: 'width: 2em; height: 2em;' %>
     </header>
     <div class="container-fluid">
-      <%= yield %>
+      <div class="row">
+
+        <div class="col-9">
+          <%= yield %>
+        </div>
+
+        <div class="col-3 sidebar">
+          <h6>
+            col-3<br>
+            サイドバー<br>
+            どっかへのリンクとか<br>
+            広告とか貼ろうかな
+          </h6>
+        </div>
+
+      </div>
     </div>
   </body>
 </html>

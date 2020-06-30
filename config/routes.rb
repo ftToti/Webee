@@ -48,9 +48,11 @@ Rails.application.routes.draw do
 
   resources :entries, only: [:index, :create]
   get 'entries/complete', to: 'entries#complete', as: 'entries_complete'
-  get 'entries/propriety', to: 'entries#propriety', as: 'entries_propriety'
-  post 'entries/selection', to: 'entries#selection', as: 'entries_selection'
+  get 'entries/:id/propriety', to: 'entries#propriety', as: 'entries_propriety'
+  post 'entries/:id/selection', to: 'entries#selection', as: 'entries_selection'
 
   resources :notifications, only: [:index]
+
+  resources :participants, only: [:index]
 
 end

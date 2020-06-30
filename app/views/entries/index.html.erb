@@ -1,0 +1,13 @@
+<h2>応募(entries)</h2>
+
+<% @entries.each do |e| %>
+	<% if params[:version] == 'user' %>
+		<label>依頼名</label>
+		<%= e.request.title %>
+	<% elsif params[:version] == 'request' %>
+		<label>ユーザ名</label>
+		<%= e.user.name %>
+		<%= e.message %>
+		<%= link_to '参加可否へ', entries_propriety_path(e), class: 'btn' %>
+	<% end %>
+<% end %>
