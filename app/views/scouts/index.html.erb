@@ -1,13 +1,13 @@
-<h2>応募(entries)</h2>
+<h2>スカウト(scout)</h2>
 
-<% @entries.each do |ur| %>
+<% @scouts.each do |ur| %>
 	<% if params[:version] == 'user' %>
 		<label>依頼名</label>
 		<%= ur.request.title %>
+		<%= link_to '参加可否へ', scouts_propriety_path(ur), class: 'btn' %>
 	<% elsif params[:version] == 'request' %>
 		<label>ユーザ名</label>
 		<%= ur.user.name %>
 		<%= ur.message %>
-		<%= link_to '参加可否へ', entries_propriety_path(ur), class: 'btn' %>
 	<% end %>
 <% end %>

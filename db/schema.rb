@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2020_06_28_184759) do
     t.integer "request_id", null: false
     t.integer "value"
     t.string "commnet"
-    t.boolean "ststus", default: false
+    t.boolean "status", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 2020_06_28_184759) do
   end
 
   create_table "relationships", force: :cascade do |t|
-    t.integer "follow_id", null: false
+    t.integer "follower_id", null: false
     t.integer "followed_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(version: 2020_06_28_184759) do
     t.datetime "delivery_date", null: false
     t.datetime "completion"
     t.integer "recruiment_max", null: false
-    t.integer "status", default: 0, null: false
+    t.integer "status", limit: 1, default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(version: 2020_06_28_184759) do
     t.string "strong_point"
     t.text "introduction"
     t.string "profile_image_id"
-    t.integer "status", default: 0, null: false
+    t.integer "status", limit: 1, default: 0, null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

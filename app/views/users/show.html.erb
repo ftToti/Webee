@@ -1,11 +1,25 @@
 <!-- <ユーザー詳細> -->
 <div>
-	<div class="profile_box", style="width: 90%; height: 500px;">
-		<%= attachment_image_tag @user, :profile_image, fallback: 'no_image.jpg', size:'200x200', style: 'border-radius: 50%;' %>
-		<%= @user.name %>
+	<%= render 'users/profile_box', user: @user %>
+
+	<h4>【自己紹介】</h4>
+	<%= @user.introduction %>
+
+	<div>
+		<% if @user == current_user %>
+			<%= link_to 'プロフィールを編集する', edit_user_path %>
+		<% end %>
+		<% if @user == current_user %>
+			<%= link_to '評価をする', evaluations_unfinished_path %>
+		<% end %>
+		<% if @user != current_user && current_user.requests.exists?(status: 'wanted') %>
+			<%= link_to 'このユーザーをスカウトする', new_scout_path(user: @user.id) %>
+		<% end %>
+		<%= link_to '応募している依頼一覧へ', entries_path(id: @user, version: 'user') %>
+		<%= link_to 'スカウトされている依頼一覧へ', scouts_path(id: @user, version: 'user') %>
+		<%= link_to '参加している依頼一覧へ', participants_path(id: @user, version: 'user') %>
+		<%= link_to '募集している依頼一覧へ', requests_path(id: @user, version: 'wanted') %>
+		<%= link_to 'お気に入りの依頼一覧へ', requests_path(id: @user, version: 'favorite') %>
+		<%= link_to 'フォロー一覧', user_relationships_path(@user) %>
 	</div>
-	<%= link_to 'プロフィールを編集する', edit_user_path %>
-	<%= link_to '応募している依頼一覧へ', entries_path(id: @user, version: 'user') %>
-	<%= link_to '参加している依頼一覧へ', participants_path(id: @user, version: 'user') %>
-	<%= link_to '募集している依頼一覧へ', requests_path(id: @user, version: 'wanted') %>
 </div>

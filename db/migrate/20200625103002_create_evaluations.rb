@@ -5,7 +5,7 @@ class CreateEvaluations < ActiveRecord::Migration[5.2]
     	t.integer :request_id, null: false
     	t.integer :value
     	t.string :commnet
-    	t.boolean :ststus, default: false
+    	t.boolean :status, default: false
 
       t.timestamps
     end

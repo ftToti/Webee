@@ -14,7 +14,7 @@
 	</tr>
 	<tr>
 		<th><%= f.label :content %></th>
-		<td><%= @request.content %></td>
+		<td><%= simple_format(@request.content) %></td>
 		<%= f.hidden_field :content, :value => @request.content %>
 	</tr>
 	<tr>
@@ -24,22 +24,22 @@
 	</tr>
 	<tr>
 		<th><%= f.label :reward %></th>
-		<td><%= @request.reward %></td>
+		<td><%= @request.reward %> / 人</td>
 		<%= f.hidden_field :reward, :value => @request.reward %>
 	</tr>
 	<tr>
 		<th><%= f.label :recruiment_end %></th>
-		<td><%= @request.recruiment_end %></td>
+		<td><%= @request.recruiment_end.strftime('%Y-%m-%d %H:%M') %></td>
 		<%= f.hidden_field :recruiment_end, :value => @request.recruiment_end %>
 	</tr>
 	<tr>
 		<th><%= f.label :delivery_date %></th>
-		<td><%= @request.delivery_date %></td>
+		<td><%= @request.delivery_date.strftime('%Y-%m-%d %H:%M') %></td>
 		<%= f.hidden_field :delivery_date, :value => @request.delivery_date %>
 	</tr>
 	<tr>
 		<th><%= f.label :recruiment_max %></th>
-		<td><%= @request.recruiment_max %></td>
+		<td><%= @request.recruiment_max %> 人</td>
 		<%= f.hidden_field :recruiment_max, :value => @request.recruiment_max %>
 	</tr>
 </table>

@@ -33,4 +33,4 @@ https://drive.google.com/file/d/1wiEW83mbY-iax15PdhMCK0vAcnXQhRqT/view?usp=shari
 ### ワイヤーフレーム
 https://drive.google.com/file/d/12D3IMDg4FFw1abi2Rh88vJB9JsHF3vmW/view?usp=sharing
 
-プロフィール編集から使えるスキル・得意なスキル作成
+requestのステータスenum　更新できない

@@ -1,0 +1,29 @@
+<div class="row">
+
+	<div class="col-6">
+		<h4 style="text-align: center;">
+			フォロー <%= @follow.count %> 人
+		</h4>
+		<div class="scroll">
+			<% @follow.each do |follow| %>
+				<div>
+					<%= render 'users/profile_box', user: follow %>
+				</div>
+			<% end %>
+		</div>
+	</div>
+
+	<div class="col-6">
+		<h4 style="text-align: center;">
+			フォロワー <%= @followed.count %> 人
+		</h4>
+		<div class="scroll">
+			<% @followed.each do |followed| %>
+				<div>
+					<%= render 'users/profile_box', user: followed %>
+				</div>
+			<% end %>
+		</div>
+	</div>
+
+</div>

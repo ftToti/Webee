@@ -10,7 +10,7 @@ class CreateRequests < ActiveRecord::Migration[5.2]
     	t.datetime :delivery_date, null: false
     	t.datetime :completion
     	t.integer :recruiment_max, null: false
-    	t.integer :status, null: false, default: 0
+    	t.integer :status, null: false, default: 0, limit: 1
 
       t.timestamps
     end

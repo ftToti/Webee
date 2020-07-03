@@ -26,13 +26,10 @@ Rails.application.routes.draw do
   get '/users/:id/relationships', to: 'users#relationships', as: 'user_relationships'
   get '/users/:id/favorites', to: 'users#favorites', as: 'user_favorites'
 
-  resources :requests
+  resources :requests, only: [:index, :new, :create, :show, :edit, :update]
   post 'requests/check', to: 'requests#check', as: 'requests_check'
-  get 'requests/confirm', to: 'requests#confirm', as: 'requests_confirm'
-  get 'requests/complete', to: 'requests#complete', as: 'requests_complete'
-  patch 'requests/finish', to: 'requests#finish', as: 'requests_finish'
 
-  resources :evaluations, only: [:index, :edit, :update]
+  resources :evaluations, only: [:edit, :update]
   get 'evaluations/unfinished', to: 'evaluations#unfinished', as: 'evaluations_unfinished'
 
   resources :rooms, only: [:index, :show]
@@ -43,10 +40,12 @@ Rails.application.routes.draw do
 
   resources :relationships, only: [:create, :destroy]
 
-  resources :scouts, only: [:new, :create]
+  resources :scouts, only: [:index, :new, :create, :destroy]
   get 'scouts/complete', to: 'scouts#complete', as: 'scouts_complete'
+  get 'scouts/:id/propriety', to: 'scouts#propriety', as: 'scouts_propriety'
+  post 'scouts/:id/selection', to: 'scouts#selection', as: 'scouts_selection'
 
-  resources :entries, only: [:index, :create]
+  resources :entries, only: [:index, :create, :destroy]
   get 'entries/complete', to: 'entries#complete', as: 'entries_complete'
   get 'entries/:id/propriety', to: 'entries#propriety', as: 'entries_propriety'
   post 'entries/:id/selection', to: 'entries#selection', as: 'entries_selection'

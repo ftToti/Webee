@@ -11,7 +11,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       t.string :strong_point
       t.text :introduction
       t.string :profile_image_id
-      t.integer :status, null: false, default: 0
+      t.integer :status, null: false, default: 0, limit: 1
 
       ## Recoverable
       t.string   :reset_password_token

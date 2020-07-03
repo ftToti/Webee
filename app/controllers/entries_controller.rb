@@ -18,6 +18,12 @@ class EntriesController < ApplicationController
 		redirect_to entries_path(id: current_user, version: 'user')
 	end
 
+	def destroy
+		@entry = current_user.entries.find_by(request_id: params[:id])
+		@entry.destroy
+		redirect_back(fallback_location: root_path)
+	end
+
 	def propriety
 		@entry = Entry.find(params[:id])
 		@user = @entry.user
@@ -40,7 +46,6 @@ class EntriesController < ApplicationController
 			@entry.destroy
 			redirect_to user_path(current_user)
 		end
-
 	end
 
 	private

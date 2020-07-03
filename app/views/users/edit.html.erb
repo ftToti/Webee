@@ -22,11 +22,29 @@
 	</tr>
 	<tr>
 		<th><%= f.label '使えるスキル' %></th>
-		<td><%= collection_check_boxes(:possible, :skill_ids, Skill.all, :id, :item, include_hidden: false) %></td>
+		<td>
+			<% Skill.all.each do |s| %>
+				<% if SkillSet.exists?(possible_id: @user.id, skill_id: s.id) %>
+					<%= check_box_tag 'possible[skill_ids][]', s.id, checked = true, :id => "possible_skill_ids_#{s.id}" %>
+				<% else %>
+					<%= check_box_tag 'possible[skill_ids][]', s.id, checked = false, :id => "possible_skill_ids_#{s.id}" %>
+				<% end %>
+				<%= f.label s.item %>
+			<% end %>
+		</td>
 	</tr>
 	<tr>
 		<th><%= f.label '得意なスキル' %></th>
-		<td><%= collection_check_boxes(:good, :skill_ids, Skill.all, :id, :item, include_hidden: false) %></td>
+		<td>
+			<% Skill.all.each do |s| %>
+				<% if SkillSet.exists?(good_id: @user.id, skill_id: s.id) %>
+					<%= check_box_tag 'good[skill_ids][]', s.id, checked = true, :id => "good_skill_ids_#{s.id}" %>
+				<% else %>
+					<%= check_box_tag 'good[skill_ids][]', s.id, checked = false, :id => "good_skill_ids_#{s.id}" %>
+				<% end %>
+				<%= f.label s.item %>
+			<% end %>
+		</td>
 	</tr>
 </table>
 <%= f.submit %>

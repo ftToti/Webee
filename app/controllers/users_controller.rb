@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
 	def index
-		@users = User.all
+		if params[:version] == 'favorite'
+			@request = Request.find(params[:id])
+			@users = @request.favorited_users
+		else
+			@users = User.all
+		end
 	end
 
 	def show
@@ -13,30 +18,22 @@ class UsersController < ApplicationController
 
 	def update
 		@user = User.find(params[:id])
-		if @user.update(user_params)
-			if @user.possible.exists?
-				@user.possible.destroy
-			end
-
-			# SkillSet.create!(
-				# possible_id: current_user.id,
-				# skill_id: params[:possible][:skill_ids]
-				# )
-
-			# params[:possible][:skill_ids].each do |skill|
-				# SkillSet.create!(
-					# possible_id: current_user.id,
-					# good_id: nil,
-					# necessary_id: nil,
-					# skill_id: skill
-					# )
-			# end
-
+		@user.update(user_params)
+		SkillSet.where(possible_id: @user.id).destroy_all
+		SkillSet.where(good_id: @user.id).destroy_all
+		params[:possible][:skill_ids].each do |p|
+			SkillSet.create!(possible_id: @user.id, skill_id: p)
+		end
+		params[:good][:skill_ids].each do |g|
+			SkillSet.create!(good_id: @user.id, skill_id: g)
 		end
 		redirect_to user_path(@user)
 	end
 
 	def relationships
+		@user = User.find(params[:id])
+		@follow = @user.following_users
+		@followed = @user.followed_users
 	end
 
 	def favorites

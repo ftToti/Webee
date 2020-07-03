@@ -1,0 +1,19 @@
+<h3>スカウトするユーザー</h3>
+
+<%= render 'users/profile_box', user: @user %>
+
+<h3>スカウトする依頼</h3>
+<div>
+	<%= form_with model: @scout, local: true do |f| %>
+		<% current_user.requests.where(status: 'wanted').each do |request| %>
+			<div>
+				<%= f.radio_button :request_id, request.id %>
+				<%= f.label request.title %>
+			</div>
+		<% end %>
+		<%= f.label :message %>
+		<%= f.text_field :messsage %>
+		<%= f.hidden_field :user_id, :value => @user.id %>
+		<%= f.submit %>
+	<% end %>
+</div>

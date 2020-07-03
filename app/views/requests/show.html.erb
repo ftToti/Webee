@@ -1,45 +1,95 @@
-<div>
-	<h2><%= @request.title %></h2>
-	<div>
-		<div>
-			<h3><%= @request.user.name %></h3>
-			<%= @request.created_at %>
-			<%= @request.recruiment_end %>
-			<%= @request.delivery_date %>
-		</div>
-		<div>
-			<label>報酬</label>
-			<%= @request.reward %>
-		</div>
-		<div>
-			<label>残り時間</label>
-			<%= @request.recruiment_end - Time.now %>
-		</div>
-		<div>
-			<label>採用人数</label>
-			<%= @request.recruiment_max %>
-		</div>
-		<div>
-			<label>お気に入り</label>
+<div style="width: 80%; margin: 0 auto;">
 
+	<h2>タイトル：<%= @request.title %></h2>
+	<%= @status %>
+
+	<% if @request.user == current_user %>
+		<% if @request.status == 'wanted' %>
+			<%= link_to '募集を締め切る', request_path(id: @request, status: "progress"), method: :patch, class: 'btn btn-primary' %>
+		<% elsif @request.status == 'progress' %>
+			<%= link_to '依頼を完了する', request_path(id: @request, status: "completed"), method: :patch, class: 'btn btn-primary' %>
+		<% elsif @request.status == 'completed' %>
+			<%= link_to '募集中に戻る(仮)', request_path(id: @request, status: "wanted"), method: :patch, class: 'btn btn-primary' %>
+		<% elsif @request.status == 'cancel' %>
+			<%= link_to '募集中に戻る(仮)', request_path(id: @request, status: "wanted"), method: :patch, class: 'btn btn-primary' %>
+		<% end %>
+		<% if @request.status == 'wanted' %>
+			<%= link_to '依頼を取り下げる', request_path(id: @request, status: "cancel"), method: :patch, class: 'btn btn-primary' %>
+		<% end %>
+	<% end %>
+
+
+	<div class="content_box">
+		<div class="content_box_top">
+			<h3>依頼者：<%= @request.user.name %></h3>
+			<label>投稿日時</label>
+			<%= @request.created_at.strftime('%Y-%m-%d %H:%M') %>
+			<label>募集締切日時</label>
+			<%= @request.recruiment_end.strftime('%Y-%m-%d %H:%M') %>
+			<label>希望納期</label>
+			<%= @request.delivery_date.strftime('%Y-%m-%d %H:%M') %>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class='col-3 content_box_bottom'>
+					<label>報酬</label><br>
+					<%= @request.reward %> 円
+				</div>
+				<div class='col-3 content_box_bottom'>
+					<label>募集締切日</label><br>
+					<%= @sa %> 日後
+				</div>
+				<div class='col-3 content_box_bottom'>
+					<label>参加人数</label><br>
+					<%= @request.participants.count %> / <%= @request.recruiment_max %> 人
+				</div>
+				<div class='col-3 content_box_bottom'>
+					<label>お気に入り</label>
+					<%= @request.favorites.count %>件<br>
+					<% if current_user.favorited_by?(@request) %>
+						<%= link_to 'お気に入りを取り消す', favorite_path(@request), method: :delete %>
+					<% else %>
+						<%= link_to 'お気に入りに登録する', favorites_path(id: @request), method: :post %>
+					<% end %>
+				</div>
+			</div>
 		</div>
 	</div>
 
-	<h3>求めるスキル</h3>
+
+	<label style='font-size: 1.5em;'>求めるスキル：</label>
 	<% @request.necessary.each do |s| %>
-		<%= s.skill_id %>
+		<span style='font-size: 1.5em;'><%= s.skill.item + " / " %></span>
+	<% end %><br>
+
+	<label style='font-size: 1.5em;'>依頼詳細</label><br>
+	<%= simple_format(@request.content) %><br>
+
+	<% if current_user.requests.include?(@request) && @request.wanted? %>
+		<%= link_to '依頼を編集する', edit_request_path(@request) %>
 	<% end %>
-
-	<h3>依頼詳細</h3>
-	<%= @request.content %>
-
 	<%= link_to '応募者一覧へ', entries_path(id: @request, version: 'request') %>
+	<%= link_to 'スカウト中のユーザー一覧へ', scouts_path(id: @request, version: 'request') %>
+	<%= link_to 'お気に入りをしているユーザー一覧へ', users_path(id: @request, version: 'favorite') %>
 
-	<h3>応募フォーム</h3>
-	<%= form_with model: @entry, url: entries_path, method: :post, local: true do |f| %>
-		<%= f.text_area :message %>
-		<%= f.hidden_field :request_id, :value => params[:id] %>
-		<%= f.submit '応募する' %>
+	<% if @request.wanted? %>
+		<% if current_user.participants.where(request_id: params[:id]).exists? %>
+			参加済みです
+		<% elsif current_user.scouts.where(request_id: params[:id]).exists? %>
+			スカウトが届いています
+		<% elsif current_user.entries.where(request_id: params[:id]).exists? %>
+			<%= link_to '応募を取り消す', entry_path(@request), method: :delete %>
+		<% elsif current_user.requests.include?(@request) == false %>
+			<h4>応募フォーム</h4>
+			<%= form_with model: @entry, url: entries_path, method: :post, local: true do |f| %>
+				<%= f.text_area :message, size: '80x10' %>
+				<%= f.hidden_field :request_id, :value => params[:id] %>
+				<%= f.submit '応募する' %>
+			<% end %>
+		<% else %>
+			あなたの投稿した依頼です
+		<% end %>
 	<% end %>
+
 
 </div>

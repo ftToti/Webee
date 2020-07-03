@@ -1,0 +1,55 @@
+<div class="profile_box">
+	<div class="row">
+		<div class="col-4">
+			<%= link_to user_path(user) do %>
+				<%= attachment_image_tag user, :profile_image, fallback: 'no_image.jpg', size:'120x120', style: 'border-radius: 50%;' %>
+			<% end %>
+		</div>
+		<div class="col-8">
+			<%= link_to user_path(user) do %>
+				<h4><%= user.name %></h4>
+			<% end %>
+			<span style="margin-right: 1em;">
+				<label>実績：</label>
+				<%= user.evaluations.count %>件
+			</span>
+			<span>
+				<label>評価：</label>
+				<%= '#' %>
+			</span>
+			<span>
+				<label>希望報酬：</label>
+				<% unless user.desired_reward.blank? %>
+					¥ <%= user.desired_reward %> 〜
+				<% else %>
+					設定されていません
+				<% end %>
+			</span>
+		</div>
+	</div>
+	<div>
+		<span class="profile_box_bottom">
+			<label>使えるスキル：</label>
+			<% user.possible.each do |p| %>
+				<%= p.skill.item %> /
+			<% end %>
+		</span><br>
+		<span class="profile_box_bottom">
+			<label>得意なスキル：</label>
+			<% user.good.each do |g| %>
+				<%= g.skill.item %> /
+			<% end %>
+		</span><br>
+		<span class="profile_box_bottom">
+			<label>ひとこと：</label>
+			<%= user.strong_point %>
+		</span><br>
+		<% if user != current_user %>
+			<% if current_user.following?(user) %>
+				<%= link_to 'フォローを解除する', relationship_path(user), method: :delete, class: 'btn btn-primary' %>
+			<% else %>
+				<%= link_to 'フォローする', relationships_path(id: user), method: :post, class: 'btn btn-primary' %>
+			<% end %>
+		<% end %>
+	</div>
+</div>

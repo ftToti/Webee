@@ -1,19 +1,8 @@
 <!-- <プロフィール一覧> -->
 <div class="d-flex flex-wrap">
 	<% @users.each do |u| %>
-		<div class="profile_box">
-			<%= attachment_image_tag u, :profile_image, fallback: 'no_image.jpg', size:'100x100', style: 'border-radius: 50%;' %>
-			<%= link_to user_path(u) do %>
-				<%= u.name %>
-			<% end %><br>
-			<% u.good.each do |g| %>
-				<%= g.skill %>
-			<% end %>
-			<%= u.strong_point %><br>
-			<%= u.evaluations.count %><br>
-			<%= u.desired_reward %><br>
-			<%= u.introduction %><br>
-			<%= u.created_at %>
+		<div style="width:50%;">
+			<%= render 'users/profile_box', user: u %>
 		</div>
 	<% end %>
 </div>
