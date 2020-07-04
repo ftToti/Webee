@@ -1,0 +1,36 @@
+<div style="width: 80%; margin: 0 auto">
+
+<% @joins.each do |e| %>
+  <% if e.user != current_user %>
+    <h5><strong><%= link_to "#{e.user.name}", user_path(e.user) %>さんとのチャットルーム</strong></h5>
+  <% end %>
+<% end %>
+
+<%= form_for @message do |f| %>
+  <%= f.text_field :body, :placeholder => "メッセージを入力して下さい" , :size => 70 %>
+  <%= f.hidden_field :room_id, :value => @room.id %>
+  <%= f.submit "送信する" %>
+<% end %>
+<hr>
+
+<% if @messages.present? %>
+  <% @messages.each do |m| %>
+    <% if m.user == current_user %>
+      <div class="text-right">
+        <strong><%= m.body %></strong><br>
+        <small>by <strong>me</strong></small>
+        <%= m.created_at.strftime('%Y-%m-%d %H:%M') %>
+      </div>
+    <% else %>
+      <div>
+        <strong><%= m.body %></strong><br>
+        <small>by <strong><%= link_to "#{m.user.name}", user_path(m.user) %>さん</strong></small>
+        <%= m.created_at.strftime('%Y-%m-%d %H:%M') %>
+      </div>
+    <% end %>
+  <hr>
+  <% end %>
+<% else %>
+  <h3 class="text-center">メッセージはまだありません</h3>
+<% end %>
+</div>

@@ -21,5 +21,22 @@
 		<%= link_to '募集している依頼一覧へ', requests_path(id: @user, version: 'wanted') %>
 		<%= link_to 'お気に入りの依頼一覧へ', requests_path(id: @user, version: 'favorite') %>
 		<%= link_to 'フォロー一覧', user_relationships_path(@user) %>
+
+		<!-- チャット機能 -->
+		<% if user_signed_in? %>
+			<% if @user != current_user %>
+				<% if @haveRoom == true %>
+					<%= link_to 'ダイレクトメッセージ', room_path(@roomId) %>
+				<% else %>
+					<%= form_with(model: @room, local: true) do |f| %>
+						<%= fields_for @join do |j| %>
+							<%= j.hidden_field :user_id, value: @user.id %>
+						<% end %>
+						<%= f.submit %>
+					<% end %>
+				<% end %>
+			<% end %>
+		<% end %>
+		<!-- /チャット機能 -->
 	</div>
 </div>

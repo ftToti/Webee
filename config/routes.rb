@@ -32,9 +32,9 @@ Rails.application.routes.draw do
   resources :evaluations, only: [:edit, :update]
   get 'evaluations/unfinished', to: 'evaluations#unfinished', as: 'evaluations_unfinished'
 
-  resources :rooms, only: [:index, :show]
+  resources :rooms, only: [:index, :create, :show]
 
-  resources :talks, only: [:create]
+  resources :messages, only: [:create, :destroy]
 
   resources :favorites, only: [:create, :destroy]
 

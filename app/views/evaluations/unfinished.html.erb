@@ -1,9 +1,13 @@
-<h3>未完了の評価<%= Evaluation.where(request_id: current_user.requests.ids, status: 'yet').count %>件</h3>
+<% if Evaluation.where(request_id: current_user.requests.ids, status: 'yet').exists? %>
+	<h3>未完了の評価<%= Evaluation.where(request_id: current_user.requests.ids, status: 'yet').count %>件</h3>
 
-<% Evaluation.where(request_id: current_user.requests.ids, status: 'yet').each do |eva| %>
-	<div style="border-top: solod 1px;">
-		<%= eva.request.title %>
-		<%= eva.user.name %>
-		<%= link_to '評価する', edit_evaluation_path(eva), class: 'btn btn-success' %>
-	</div>
+	<% Evaluation.where(request_id: current_user.requests.ids, status: 'yet').each do |eva| %>
+		<div style="border-top: solod 1px;">
+			<%= eva.request.title %>
+			<%= eva.user.name %>
+			<%= link_to '評価する', edit_evaluation_path(eva), class: 'btn btn-success' %>
+		</div>
+	<% end %>
+<% else %>
+	<h3>未評価の依頼はありません</h3>
 <% end %>

@@ -3,7 +3,7 @@ class CreateEvaluations < ActiveRecord::Migration[5.2]
     create_table :evaluations do |t|
     	t.integer :user_id, null: false
     	t.integer :request_id, null: false
-    	t.integer :value
+    	t.float :rate
     	t.string :commnet
     	t.boolean :status, default: false
 

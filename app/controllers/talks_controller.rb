@@ -1,2 +1,0 @@
-class TalksController < ApplicationController
-end

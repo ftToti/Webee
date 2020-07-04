@@ -7,8 +7,9 @@ class User < ApplicationRecord
          has_many :rooms, dependent: :destroy
          has_many :visitor, class_name: 'Notification', foreign_key: 'visitor_id', dependent: :destroy
          has_many :visited, class_name: 'Notification', foreign_key: 'visited_id', dependent: :destroy
-         has_many :talks, dependent: :destroy
+         has_many :messages, dependent: :destroy
          has_many :joins, dependent: :destroy
+         has_many :rooms, through: :joins
          has_many :favorites, dependent: :destroy
          has_many :favorite_requests, through: :favorites, source: :request
          has_many :scouts, dependent: :destroy

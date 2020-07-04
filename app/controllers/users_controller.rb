@@ -10,6 +10,26 @@ class UsersController < ApplicationController
 
 	def show
 		@user = User.find(params[:id])
+
+		# チャット機能
+		if user_signed_in?
+			@currentUserJoin = Join.where(user_id: current_user.id)
+			@userJoin = Join.where(user_id: @user.id)
+			if @user.id != current_user.id
+				@currentUserJoin.each do |cj|
+					@userJoin.each do |uj|
+						if cj.room_id == uj.room_id
+							@haveRoom = true
+							@roomId = cj.room_id
+						end
+					end
+				end
+				if @haveRoom != true
+					@room = Room.new
+					@join = Join.new
+				end
+			end
+		end
 	end
 
 	def edit
