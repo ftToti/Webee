@@ -1,0 +1,28 @@
+<h3>評価を入力</h3>
+
+<%= @eva.user.name %>
+<%= @eva.request.title %>
+
+<%= form_with model: @eva, local: true do |f| %>
+  <!-- 評価 -->
+  <div class="" id="star">
+    <%= f.label :rate,'評価 ', class:'' %>
+    <%= f.hidden_field :rate, id: :review_star %>
+  </div>
+
+  <!-- 評価javascript -->
+  <script>
+  $('#star').raty({
+    size     : 36,
+    starOff:  '<%= asset_path('star-off.png') %>',
+    starOn : '<%= asset_path('star-on.png') %>',
+    starHalf: '<%= asset_path('star-half.png') %>',
+    scoreName: 'evaluation[rate]',
+    half: true,
+  });
+  </script>
+
+  <%= f.text_field :comment %>
+  <%= f.hidden_field :status, value: :done %>
+  <%= f.submit %>
+ <% end %>

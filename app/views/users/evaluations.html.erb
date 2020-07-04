@@ -1,0 +1,30 @@
+<h3><%= @user.evaluations.count %>件の実績</h3>
+
+<hr>
+<% @user.evaluations.each do |eva| %>
+	<div>
+		<% if eva.done? %>
+			<%= eva.request.title %>
+			<%= eva.request.request_genre.category %>
+        	<%= eva.rate %>
+        	<%= eva.comment %>
+        	<!--星評価-->
+        	<div id="star-rate-<%= eva.id %>"></div>
+        	<script>
+        		$('#star-rate-<%= eva.id %>').raty({
+            		size: 36,
+            		starOff:  '<%= asset_path('star-off.png') %>',
+            		starOn : '<%= asset_path('star-on.png') %>',
+            		starHalf: '<%= asset_path('star-half.png') %>',
+            		half: true,
+            		readOnly: true,
+            		score: <%= eva.rate %>,
+        		});
+        	</script>
+        	<!--/星評価-->
+        <% else %>
+        	<h5>まだ評価されていません</h5>
+        <% end %>
+    </div>
+    <hr>
+<% end %>

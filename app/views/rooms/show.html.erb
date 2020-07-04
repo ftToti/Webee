@@ -1,5 +1,4 @@
-<div style="width: 80%; margin: 0 auto">
-
+<div class="chat">
 <% @joins.each do |e| %>
   <% if e.user != current_user %>
     <h5><strong><%= link_to "#{e.user.name}", user_path(e.user) %>さんとのチャットルーム</strong></h5>

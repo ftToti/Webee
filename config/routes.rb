@@ -24,15 +24,15 @@ Rails.application.routes.draw do
 
   resources :users, only: [:index, :show, :edit, :update]
   get '/users/:id/relationships', to: 'users#relationships', as: 'user_relationships'
-  get '/users/:id/favorites', to: 'users#favorites', as: 'user_favorites'
+  get '/users/:id/evaluations', to: 'users#evaluations', as: 'user_evaluations'
 
   resources :requests, only: [:index, :new, :create, :show, :edit, :update]
   post 'requests/check', to: 'requests#check', as: 'requests_check'
 
-  resources :evaluations, only: [:edit, :update]
+  resources :evaluations, only: [:index, :edit, :update]
   get 'evaluations/unfinished', to: 'evaluations#unfinished', as: 'evaluations_unfinished'
 
-  resources :rooms, only: [:index, :create, :show]
+  resources :rooms, only: [:create, :show]
 
   resources :messages, only: [:create, :destroy]
 
@@ -41,12 +41,10 @@ Rails.application.routes.draw do
   resources :relationships, only: [:create, :destroy]
 
   resources :scouts, only: [:index, :new, :create, :destroy]
-  get 'scouts/complete', to: 'scouts#complete', as: 'scouts_complete'
   get 'scouts/:id/propriety', to: 'scouts#propriety', as: 'scouts_propriety'
   post 'scouts/:id/selection', to: 'scouts#selection', as: 'scouts_selection'
 
   resources :entries, only: [:index, :create, :destroy]
-  get 'entries/complete', to: 'entries#complete', as: 'entries_complete'
   get 'entries/:id/propriety', to: 'entries#propriety', as: 'entries_propriety'
   post 'entries/:id/selection', to: 'entries#selection', as: 'entries_selection'
 

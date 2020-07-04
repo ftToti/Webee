@@ -59,6 +59,10 @@ class UsersController < ApplicationController
 	def favorites
 	end
 
+	def evaluations
+		@user = User.find(params[:id])
+	end
+
 	private
 	def user_params
 		params.require(:user).permit(:name, :desired_reward, :strong_point, :introduction, :profile_image, :status)

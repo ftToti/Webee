@@ -7,26 +7,24 @@
 
 	<div>
 		<% if @user == current_user %>
-			<%= link_to 'プロフィールを編集する', edit_user_path %>
-		<% end %>
-		<% if @user == current_user %>
-			<%= link_to '評価をする', evaluations_unfinished_path %>
+			<%= link_to '評価をする', evaluations_unfinished_path, class: 'btn btn-primary' %>
 		<% end %>
 		<% if @user != current_user && current_user.requests.exists?(status: 'wanted') %>
 			<%= link_to 'このユーザーをスカウトする', new_scout_path(user: @user.id) %>
 		<% end %>
-		<%= link_to '応募している依頼一覧へ', entries_path(id: @user, version: 'user') %>
-		<%= link_to 'スカウトされている依頼一覧へ', scouts_path(id: @user, version: 'user') %>
-		<%= link_to '参加している依頼一覧へ', participants_path(id: @user, version: 'user') %>
-		<%= link_to '募集している依頼一覧へ', requests_path(id: @user, version: 'wanted') %>
-		<%= link_to 'お気に入りの依頼一覧へ', requests_path(id: @user, version: 'favorite') %>
-		<%= link_to 'フォロー一覧', user_relationships_path(@user) %>
+		<%= link_to '応募している依頼一覧へ', entries_path(id: @user, version: 'user'), class: 'btn btn-primary' %>
+		<%= link_to 'スカウトされている依頼一覧へ', scouts_path(id: @user, version: 'user'), class: 'btn btn-primary' %>
+		<%= link_to '参加している依頼一覧へ', participants_path(id: @user, version: 'user'), class: 'btn btn-primary' %>
+		<%= link_to '募集している依頼一覧へ', requests_path(id: @user, version: 'wanted'), class: 'btn btn-primary' %>
+		<%= link_to 'お気に入りの依頼一覧へ', requests_path(id: @user, version: 'favorite'), class: 'btn btn-primary' %>
+		<%= link_to 'フォロー一覧', user_relationships_path(@user), class: 'btn btn-primary' %>
+		<%= link_to '評価一覧を見る', user_evaluations_path(@user), class: 'btn btn-primary' %>
 
 		<!-- チャット機能 -->
 		<% if user_signed_in? %>
 			<% if @user != current_user %>
 				<% if @haveRoom == true %>
-					<%= link_to 'ダイレクトメッセージ', room_path(@roomId) %>
+					<%= link_to 'ダイレクトメッセージ', room_path(@roomId), class: 'btn btn-primary' %>
 				<% else %>
 					<%= form_with(model: @room, local: true) do |f| %>
 						<%= fields_for @join do |j| %>

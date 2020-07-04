@@ -4,7 +4,7 @@ class CreateEvaluations < ActiveRecord::Migration[5.2]
     	t.integer :user_id, null: false
     	t.integer :request_id, null: false
     	t.float :rate
-    	t.string :commnet
+    	t.string :comment
     	t.boolean :status, default: false
 
       t.timestamps

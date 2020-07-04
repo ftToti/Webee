@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2020_07_03_164051) do
     t.integer "user_id", null: false
     t.integer "request_id", null: false
     t.float "rate"
-    t.string "commnet"
+    t.string "comment"
     t.boolean "status", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

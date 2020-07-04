@@ -65,11 +65,13 @@
 	<label style='font-size: 1.5em;'>依頼詳細</label><br>
 	<%= simple_format(@request.content) %><br>
 
-	<% if current_user.requests.include?(@request) && @request.wanted? %>
-		<%= link_to '依頼を編集する', edit_request_path(@request) %>
+	<% if @request.wanted? %>
+		<% if current_user.requests.include?(@request) %>
+			<%= link_to '依頼を編集する', edit_request_path(@request) %>
+		<% end %>
+		<%= link_to '応募者一覧へ', entries_path(id: @request, version: 'request') %>
+		<%= link_to 'スカウト中のユーザー一覧へ', scouts_path(id: @request, version: 'request') %>
 	<% end %>
-	<%= link_to '応募者一覧へ', entries_path(id: @request, version: 'request') %>
-	<%= link_to 'スカウト中のユーザー一覧へ', scouts_path(id: @request, version: 'request') %>
 	<%= link_to 'お気に入りをしているユーザー一覧へ', users_path(id: @request, version: 'favorite') %>
 
 	<% if @request.wanted? %>
