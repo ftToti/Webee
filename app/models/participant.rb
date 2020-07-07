@@ -1,5 +1,6 @@
 class Participant < ApplicationRecord
 	belongs_to :user
 	belongs_to :request
-	validates_uniqueness_of :request_id, scope: :user_id
+
+	validates :request_id, uniqueness: { scope: :user_id }
 end

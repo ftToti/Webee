@@ -1,7 +1,11 @@
 class Evaluation < ApplicationRecord
 	belongs_to :user
 	belongs_to :request
-	validates_uniqueness_of :request_id, scope: :user_id
-
 	enum status: {done: true, yet: false}
+
+	validates :request_id, uniqueness: { scope: :user_id }
+	validates :rate, numericality: {
+		less_than_or_equal_to: 5,
+		greater_than_or_equal_to: 0.5
+	}, presence: true
 end

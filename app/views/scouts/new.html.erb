@@ -11,9 +11,8 @@
 				<%= f.label request.title %>
 			</div>
 		<% end %>
-		<%= f.label :message %>
-		<%= f.text_field :messsage %>
+		<%= f.text_area :messsage, size: '80x10', placeholder: "スカウトメッセージを入力" %>
 		<%= f.hidden_field :user_id, :value => @user.id %>
-		<%= f.submit %>
+		<%= f.submit 'スカウトを送る', class: 'btn btn-sm btn-primary' %>
 	<% end %>
 </div>

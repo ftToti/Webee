@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_03_164051) do
+ActiveRecord::Schema.define(version: 2020_07_04_105251) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 2020_07_03_164051) do
     t.integer "user_id", null: false
     t.integer "room_id", null: false
     t.string "body", null: false
+    t.boolean "checked", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -68,11 +69,10 @@ ActiveRecord::Schema.define(version: 2020_07_03_164051) do
     t.integer "visitor_id", null: false
     t.integer "visited_id", null: false
     t.integer "request_id"
-    t.integer "favorite_id"
-    t.integer "talk_id"
+    t.integer "message_id"
     t.integer "scout_id"
     t.integer "entry_id"
-    t.integer "action", null: false
+    t.string "action", null: false
     t.boolean "checked", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 2020_07_03_164051) do
     t.integer "status", limit: 1, default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["title"], name: "index_requests_on_title"
   end
 
   create_table "rooms", force: :cascade do |t|
@@ -156,6 +157,7 @@ ActiveRecord::Schema.define(version: 2020_07_03_164051) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["name"], name: "index_users_on_name"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 

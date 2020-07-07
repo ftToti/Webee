@@ -1,29 +1,20 @@
 class ScoutsController < ApplicationController
-	def index
-		if params[:version] == 'user'
-			@user = User.find(params[:id])
-			@scouts = @user.scouts
-		elsif params[:version] == 'request'
-			@request = Request.find(params[:id])
-			@scouts = @request.scouts
-		else
-			@scouts = current_user.scouts
-		end
-	end
-
+	before_action :authenticate_user!
 	def new
 		@user = User.find(params[:user])
 		@scout = Scout.new
 	end
 
 	def create
-		@scout = Scout.new(scout_params)
-		if @scout.save!
-			redirect_to request_path(@scout.request)
+		scout = Scout.new(scout_params)
+		if scout.save!
+			scout.create_notification_scout!(current_user)
+			redirect_to user_path(scout.user), notice: 'スカウトが完了しました'
 		end
 	end
 
 	def destroy
+		flash[:notice] = 'スカウトを削除しました'
 		redirect_back(fallback_location: root_path)
 	end
 
@@ -31,6 +22,11 @@ class ScoutsController < ApplicationController
 		@scout = Scout.find(params[:id])
 		@user = @scout.user
 		@request = @scout.request
+		# 募集締切までの日付を計算
+		d1= Date.new(@request.recruiment_end.year, @request.recruiment_end.month, @request.recruiment_end.day)
+		d2 = Date.today
+		# 募集締切までの日付
+		@sa = (d1 -d2).to_i
 	end
 
 	def selection
@@ -40,14 +36,15 @@ class ScoutsController < ApplicationController
 			@participant = Participant.new
 			@participant.user_id = @scout.user_id
 			@participant.request_id = @scout.request_id
-			@participant.save!
-			# 応募者から削除
-			@scout.destroy
-			redirect_to user_path(current_user)
+			if @participant.save!
+				# スカウトを削除
+				@scout.destroy
+				redirect_to request_path(@participant.request), notice: '依頼に参加しました'
+			end
 		elsif params[:version] == 'deny'
-			# 応募者から削除
+			# スカウトを削除
 			@scout.destroy
-			redirect_to user_path(current_user)
+			redirect_to requests_path(id: current_user.id, version: 'scout'), notice: '参加を拒否しました'
 		end
 	end
 

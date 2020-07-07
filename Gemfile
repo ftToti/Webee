@@ -77,3 +77,5 @@ gem 'bootstrap', '~>4.5.0' #レイアウト
 gem 'jquery-rails'
 
 gem 'faker' #ダミーデータ作成
+
+gem 'font-awesome-sass', '~> 5.4.1'

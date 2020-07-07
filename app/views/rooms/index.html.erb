@@ -6,7 +6,11 @@
 	<% room.users.each do |user| %>
 		<% if user != current_user && Message.where(room_id: room.id).exists? %>
 			<div>
-				<%= link_to "#{user.name}さんとのチャットルームへ", room_path(room) %>
+				<% if Message.where(room_id: room.id, user_id: user.id, checked: false).exists? %>
+					<strong><%= link_to "#{user.name}さんとのチャットルーム", room_path(room) %></strong>
+				<% else %>
+					<%= link_to "#{user.name}さんとのチャットルーム", room_path(room) %>
+				<% end %>
 			</div>
 			<% room.messages.includes(:user).order("created_at desc").first(1).each do |m| %>
 			    <div>
@@ -21,6 +25,10 @@
 			    					<%= link_to "#{m.user.name}", user_path(m.user) %>さん
 			    				<% end %>
 			    				</strong>
+
+			    			<% if Message.where(room_id: room.id, user_id: user.id, checked: false).exists? %>
+			    				(未読)
+			    			<% end %>
 			    			<%= m.created_at.strftime('%Y-%m-%d %H:%M') %>
 			    		</small>
 			    	</div>

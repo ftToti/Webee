@@ -4,21 +4,38 @@
   <%= render "users/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <%= f.label :ニックネーム※ %><br />
+    <%= f.text_field :name, autofocus: true, placeholder: '2〜20文字' %>
   </div>
 
   <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
+    <%= f.label :メールアドレス※ %><br />
+    <%= f.email_field :email %>
   </div>
 
   <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+    <%= f.label :希望報酬 %><br />
+    <%= f.text_field :desired_reward %>
+  </div>
+
+  <div class="field">
+    <%= f.label :アピールポイント %><br />
+    <%= f.text_field :strong_point, placeholder: '〜30文字' %>
+  </div>
+
+  <div class="field">
+    <%= f.label :自己紹介 %><br />
+    <%= f.text_area :introduction, placeholder: '自己紹介を入力', style: 'width: 30em; height: 30em;' %>
+  </div>
+
+  <div class="field">
+    <%= f.label :パスワード※ %><br />
+    <%= f.password_field :password, placeholder: '6字以上' %>
+  </div>
+
+  <div class="field">
+    <%= f.label :パスワード確認※ %><br />
+    <%= f.password_field :password_confirmation, placeholder: '6字以上' %>
   </div>
 
   <div class="actions">

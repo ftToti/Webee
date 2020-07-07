@@ -4,6 +4,7 @@ class CreateMessages < ActiveRecord::Migration[5.2]
     	t.integer :user_id, null: false
     	t.integer :room_id, null: false
     	t.string :body, null: false
+    	t.boolean :checked, default: false
 
       t.timestamps
     end

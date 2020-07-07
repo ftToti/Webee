@@ -1,12 +1,14 @@
 class EvaluationsController < ApplicationController
+	before_action :authenticate_user!
 	def edit
 		@eva = Evaluation.find(params[:id])
 	end
 
 	def update
 		@eva = Evaluation.find(params[:id])
-		@eva.update(evaluation_params)
-		redirect_to evaluations_unfinished_path
+		if @eva.update(evaluation_params)
+			redirect_to evaluations_unfinished_path, notice: '評価が完了しました'
+		end
 	end
 
 	private

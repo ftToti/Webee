@@ -1,11 +1,26 @@
 class RequestsController < ApplicationController
+	before_action :authenticate_user!, only: [:new, :check, :create, :edit, :update]
 	def index
-		if params[:version] == 'wanted'
+		if params[:version] == 'entry'
 			@user = User.find(params[:id])
-			@requests = @user.requests
+			@requests = @user.entry_requests
+		elsif params[:version] == 'scout'
+			@user = User.find(params[:id])
+			@requests = @user.scout_requests
+		elsif params[:version] == 'participant'
+			@user = User.find(params[:id])
+			@requests = @user.participant_requests
 		elsif params[:version] == 'favorite'
-			@user = User.find(params[:id])
-			@requests = @user.favorite_requests
+			@requests = current_user.favorite_requests
+		elsif params[:version] == 'user'
+			@requests = @user.request
+		elsif params[:version] == 'wanted'
+			@requests = Request.where(status: 'wanted')
+		elsif params[:version] == 'category'
+			@genre = RequestGenre.find(params[:id])
+			@requests = @genre.requests
+		elsif params[:version] == 'search'
+			@requests = Request.where(['title Like ?', "%#{params[:keyword]}%"])
 		else
 			@requests = Request.all
 		end
@@ -19,16 +34,27 @@ class RequestsController < ApplicationController
 
 	def check
 		@request = Request.new(request_params)
+		@skills = Skill.find(params[:necessary][:skill_ids])
+		if params[:request][:request_genre_id].blank?
+			flash[:alert] = '依頼ジャンルを選択してください'
+			render :new
+		end
+		if params[:necessary][:skill_ids] == []
+			flash[:alert] = '求めるスキルを選択してください'
+			render :new
+		end
 	end
 
 	def create
 		@request = Request.new(request_params)
 		@request.user_id = current_user.id
-		if @request.save!
+		if @request.save
 			params[:necessary].split(' ').each do |n|
 				SkillSet.create!(necessary_id: @request.id, skill_id: n)
 			end
-			redirect_to request_path(@request)
+			redirect_to request_path(@request), notice: '依頼を投稿しました'
+		else
+			render :new
 		end
 	end
 
@@ -42,17 +68,6 @@ class RequestsController < ApplicationController
 		d2 = Date.today
 		# 募集締切までの日付
 		@sa = (d1 -d2).to_i
-		# ステータスの表示
-		case @request.status
-		when 'wanted'
-			@status = '募集中'
-		when 'progress'
-			@status = '進行中'
-		when 'completed'
-			@status = '達成済み'
-		when 'cancel'
-			@status = '取り下げ'
-		end
 	end
 
 	def edit
@@ -64,41 +79,33 @@ class RequestsController < ApplicationController
 		# binding.pry
 		if params[:status] == 'wanted'
 			@request.wanted!
+			redirect_to request_path(@request), notice: 'ステータスを更新しました'
 		elsif params[:status] == 'progress'
 			@request.progress!
 			Entry.where(request_id: @request.id).destroy_all
 			Scout.where(request_id: @request.id).destroy_all
+			redirect_to request_path(@request), notice: 'ステータスを更新しました'
 		elsif params[:status] == 'completed'
 			@request.completed!
 			@request.participants.each do |p|
 				Evaluation.create!(user_id: p.user_id, request_id: p.request_id)
 				p.destroy
 			end
+			redirect_to request_path(@request), notice: 'ステータスを更新しました'
 		elsif params[:status] == 'cancel'
 			@request.cancel!
 			Entry.where(request_id: @request.id).destroy_all
 			Scout.where(request_id: @request.id).destroy_all
 			Participant.where(request_id: @request.id).destroy_all
+			redirect_to request_path(@request), notice: '依頼を取り下げました'
 		else
 			@request.update!(request_params)
 			SkillSet.where(necessary_id: @request.id).destroy_all
 			params[:necessary][:skill_ids].each do |skill|
 				SkillSet.create!(necessary_id: @request.id, skill_id: skill)
 			end
+			redirect_to request_path(@request), notice: '依頼を編集しました'
 		end
-		redirect_to request_path(@request)
-	end
-
-	def destroy
-	end
-
-	def confirm
-	end
-
-	def complete
-	end
-
-	def finish
 	end
 
 	private

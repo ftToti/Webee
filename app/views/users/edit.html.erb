@@ -1,8 +1,13 @@
 <%= form_with model: @user, local: true do |f| %>
+<%= render 'layouts/error_messages', model: f.object %>
 <table class="table">
 	<tr>
 		<th><%= f.label :name %></th>
-		<td><%= f.text_field :name %></td>
+		<td><%= f.text_field :name, autofocus: true, placeholder: "2〜20文字" %></td>
+	</tr>
+	<tr>
+		<th><%= f.label :email %></th>
+		<td><%= f.email_field :email %></td>
 	</tr>
 	<tr>
 		<th><%= f.label :desired_reward %></th>
@@ -10,7 +15,7 @@
 	</tr>
 	<tr>
 		<th><%= f.label :strong_point %></th>
-		<td><%= f.text_field :strong_point %></td>
+		<td><%= f.text_field :strong_point, placeholder: "〜30文字" %></td>
 	</tr>
 	<tr>
 		<th><%= f.label :introduction %></th>

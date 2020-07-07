@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WebPro</title>
+    <title>Webee</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -11,31 +11,61 @@
 
   <body>
     <header class="d-flex align-items-center">
-      <%= link_to '#', class: 'title' do %>
-        <h1>Web pro</h1>
+
+      <%= link_to root_path do %>
+        <h1>Webee</h1>
       <% end %>
-        <%= link_to '仕事をさがす', requests_path %>
+
+      <!-- ログイン時 -->
+      <% if user_signed_in? %>
+        <%= link_to 'マイページ', user_path(current_user) %>
+        <%= link_to '仕事をさがす', requests_path(version: 'wanted') %>
         <%= link_to 'ユーザー一覧', users_path %>
-        <%= link_to '仕事を依頼する', new_request_path %>
-        <% if user_signed_in? %>
-          <%= link_to 'マイページ', user_path(current_user) %>
-          <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
-          <%= current_user.name %>
-        <% else %>
-          <%= link_to 'ログイン', new_user_session_path %>
+        <%= link_to '依頼を作成する', new_request_path %>
+        <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
+        ようこそ<%= current_user.name %>さん
+        <%= link_to rooms_path, class: 'header-circle btn btn-light rounded-circle ml-auto' do %>
+            <i class="far fa-envelope fa-lg n-icon"></i>
         <% end %>
-        <%= link_to '', rooms_path, class: 'btn btn-light rounded-circle ml-auto', style: 'width: 2em; height: 2em;' %>
-        <%= link_to '', '#', class: 'btn btn-light rounded-circle', style: 'width: 2em; height: 2em;' %>
+        <%= link_to notifications_path, class: 'header-circle btn btn-light rounded-circle' do %>
+          <% if unchecked_notifications.any? %>
+            <span class="fa-stack">
+              <i class="far fa-bell fa-lg n-icon fastack-2x"></i>
+              <i class="fas fa-circle n-circle fa-stack-1x"></i>
+            </span>
+          <% else %>
+            <i class="far fa-bell fa-lg n-icon"></i>
+          <% end %>
+        <% end %>
+
+      <!-- ログアウト時 -->
+      <% else %>
+        <%= link_to 'ログイン', new_user_session_path %>
+        <%= link_to 'ユーザー登録', new_user_registration_path %>
+        <%= link_to '募集中の依頼一覧', requests_path(version: 'wanted') %>
+        <%= link_to 'ユーザー一覧', users_path %>
+      <% end %>
+
     </header>
+
+
     <div class="container-fluid">
       <div class="row">
 
         <div class="col-9">
+          <!-- サクセスメッセージ -->
+          <div>
+            <p id='notice'><%= notice %></p>
+            <p id='alert'><%= alert %></p>
+          </div>
+
+          <!-- メイン -->
           <div class="main">
           <%= yield %>
-        </div>
+          </div>
         </div>
 
+        <!-- サイドバー　広告など -->
         <div class="col-3 sidebar">
           <h6>
             col-3<br>

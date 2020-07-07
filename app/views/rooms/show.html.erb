@@ -6,7 +6,7 @@
 <% end %>
 
 <%= form_for @message do |f| %>
-  <%= f.text_field :body, :placeholder => "メッセージを入力して下さい" , :size => 70 %>
+  <%= f.text_field :body, :placeholder => "メッセージを入力して下さい" , autofocus: true, :size => 70 %>
   <%= f.hidden_field :room_id, :value => @room.id %>
   <%= f.submit "送信する" %>
 <% end %>

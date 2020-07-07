@@ -1,41 +1,31 @@
-<h2>すべての依頼</h2>
+<!-- head -->
+<div>
+	<% if params[:version] == 'entry' %>
+		<h3>応募している依頼</h3>
+		<h5><%= @user.name %></h5>
+	<% elsif params[:version] == 'scout' %>
+		<h3>スカウトされている依頼</h3>
+		<h5><%= @user.name %></h5>
+	<% elsif params[:version] == 'participant' %>
+		<h3>参加している依頼</h3>
+		<h5><%= @user.name %></h5>
+	<% elsif params[:version] == 'favorite' %>
+		<h3>お気に入りの依頼</h3>
+		<h5><%= current_user.name %></h5>
+	<% elsif params[:version] == 'wanted' %>
+		<h3>募集中の依頼</h3>
+	<% elsif params[:version] == 'category' %>
+		<h3><%= @genre.category %></h3>
+	<% elsif params[:version] == 'search' %>
+		<h3>"<%= params[:keyword] %>"にヒットした依頼</h3>
+	<% else %>
+		<h3>すべての依頼</h3>
+	<% end %>
+	<%= @requests.count %>件の依頼が見つかりました
+</div>
 
+<!-- 依頼一覧 -->
+<hr>
 <% @requests.each do |request| %>
-	<div>
-
-		<%= link_to request_path(request) do %>
-			<%= request.title %>
-		<% end %>
-
-		<% case request.status %>
-		<% when 'wanted' %>
-			募集中
-		<% when 'progress' %>
-			進行中
-		<% when 'completed' %>
-			達成済み
-		<% when 'cancel' %>
-			取り下げ
-		<% end %>
-
-		<%= @status %>
-
-		<% if request.wanted? %>
-			<% if current_user.participants.where(request_id: request.id).exists? %>
-				参加済みです
-			<% elsif current_user.scouts.where(request_id: request.id).exists? %>
-				スカウトが届いています
-			<% elsif current_user.entries.where(request_id: request.id).exists? %>
-				<%= link_to '応募を取り消す', entry_path(request), method: :delete %>
-			<% elsif current_user.requests.include?(request) == false %>
-				<%= form_with model: @entry, url: entries_path, method: :post, local: true do |f| %>
-					<%= f.text_area :message %>
-					<%= f.hidden_field :request_id, :value => request.id %>
-					<%= f.submit '応募する' %>
-				<% end %>
-			<% else %>
-				あなたの投稿した依頼です
-			<% end %>
-		<% end %>
-	</div>
+	<%= render 'request_index', request: request %>
 <% end %>

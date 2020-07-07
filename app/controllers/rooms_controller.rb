@@ -1,4 +1,5 @@
 class RoomsController < ApplicationController
+	before_action :authenticate_user!
 	def index
 		@rooms = current_user.rooms.includes(:messages).order("messages.created_at desc")
 	end
@@ -13,6 +14,11 @@ class RoomsController < ApplicationController
 	def show
 		@room = Room.find(params[:id])
 		if Join.where(user_id: current_user.id, room_id: @room.id).present?
+			@room.messages.where(checked: false).each do |message|
+				if message.user != current_user
+					message.update_attributes(checked: true)
+				end
+			end
 			@messages = @room.messages.includes(:user).order("created_at desc")
 			@message = Message.new
 			@joins = @room.joins

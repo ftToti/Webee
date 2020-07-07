@@ -1,40 +1,92 @@
-<!-- <ユーザー詳細> -->
-<div>
-	<%= render 'users/profile_box', user: @user %>
+<%= render 'users/profile_box', user: @user %>
 
+<div style="min-height: 10em;">
 	<h4>【自己紹介】</h4>
-	<%= @user.introduction %>
+	<% if @user.introduction.blank? %>
+		<div class="text-center h5">自己紹介がありません</div>
+	<% else %>
+		<%= @user.introduction %>
+	<% end %>
+</div>
 
-	<div>
+
+<!-- 投稿している依頼 -->
+<% if @user.requests.exists? %>
+	<h4>【投稿した依頼】</h4>
+	<hr>
+	<% @user.requests.first(3).each do |request| %>
+	<%= render 'requests/request_index', request: request %>
+	<% end %>
+	<% if @user.requests.count >= 3 %>
+		<div class='text-right'><%= link_to 'もっと見る>>', requests_path(id: @user, version: 'user') %></div>
+	<% end %>
+<% end %>
+
+
+<!-- 参加中の依頼 -->
+<% if @user.participant_requests.exists? %>
+	<h4>【参加中の依頼】</h4>
+	<hr>
+	<% @user.participant_requests.first(3).each do |request| %>
+	<%= render 'requests/request_index', request: request %>
+	<% end %>
+	<% if @user.participant_requests.count >= 3 %>
+		<div class='text-right'><%= link_to 'もっと見る>>', requests_path(id: @user, version: 'participant') %></div>
+	<% end %>
+<% end %>
+
+
+<!-- 応募中の依頼 -->
+<% if @user.entry_requests.exists? %>
+	<h4>【応募中の依頼】</h4>
+	<hr>
+	<% @user.entry_requests.first(3).each do |request| %>
+	<%= render 'requests/request_index', request: request %>
+	<% end %>
+	<% if @user.entry_requests.count >= 3 %>
+		<div class='text-right'><%= link_to 'もっと見る>>', requests_path(id: @user, version: 'entry') %></div>
+	<% end %>
+<% end %>
+
+
+<!-- スカウトを受けている依頼 -->
+<% if @user.scout_requests.exists? %>
+	<h4>【スカウトを受けている依頼】</h4>
+	<hr>
+	<% @user.scout_requests.first(3).each do |request| %>
+	<%= render 'requests/request_index', request: request %>
+	<% end %>
+	<% if @user.entry_requests.count >= 3 %>
+		<div class='text-right'><%= link_to 'もっと見る>>', requests_path(id: @user, version: 'scout') %></div>
+	<% end %>
+<% end %>
+
+
+<div>
+	<%= link_to 'フォロー一覧', user_relationships_path(@user), class: 'btn btn-primary' %>
+	<%= link_to '評価一覧を見る', user_evaluations_path(@user), class: 'btn btn-primary' %>
+
+	<% if user_signed_in? %>
 		<% if @user == current_user %>
 			<%= link_to '評価をする', evaluations_unfinished_path, class: 'btn btn-primary' %>
+			<%= link_to 'お気に入りの依頼一覧へ', requests_path(version: 'favorite'), class: 'btn btn-primary' %>
+		<% else %>
+			<% if current_user.requests.exists?(status: 'wanted') %>
+				<%= link_to 'このユーザーをスカウトする', new_scout_path(user: @user.id), class: 'btn btn-primary' %>
+			<% end %>
 		<% end %>
-		<% if @user != current_user && current_user.requests.exists?(status: 'wanted') %>
-			<%= link_to 'このユーザーをスカウトする', new_scout_path(user: @user.id) %>
-		<% end %>
-		<%= link_to '応募している依頼一覧へ', entries_path(id: @user, version: 'user'), class: 'btn btn-primary' %>
-		<%= link_to 'スカウトされている依頼一覧へ', scouts_path(id: @user, version: 'user'), class: 'btn btn-primary' %>
-		<%= link_to '参加している依頼一覧へ', participants_path(id: @user, version: 'user'), class: 'btn btn-primary' %>
-		<%= link_to '募集している依頼一覧へ', requests_path(id: @user, version: 'wanted'), class: 'btn btn-primary' %>
-		<%= link_to 'お気に入りの依頼一覧へ', requests_path(id: @user, version: 'favorite'), class: 'btn btn-primary' %>
-		<%= link_to 'フォロー一覧', user_relationships_path(@user), class: 'btn btn-primary' %>
-		<%= link_to '評価一覧を見る', user_evaluations_path(@user), class: 'btn btn-primary' %>
-
-		<!-- チャット機能 -->
-		<% if user_signed_in? %>
-			<% if @user != current_user %>
-				<% if @haveRoom == true %>
-					<%= link_to 'ダイレクトメッセージ', room_path(@roomId), class: 'btn btn-primary' %>
-				<% else %>
-					<%= form_with(model: @room, local: true) do |f| %>
-						<%= fields_for @join do |j| %>
-							<%= j.hidden_field :user_id, value: @user.id %>
-						<% end %>
-						<%= f.submit %>
+		<!-- チャットボタン -->
+		<% if @user != current_user %>
+			<% if @have_room == true %>
+				<%= link_to 'ダイレクトメッセージ', room_path(@room_id), class: 'btn btn-primary' %>
+			<% else %>
+				<%= form_with(model: @room, local: true) do |f| %>
+					<%= fields_for @join do |j| %>
+						<%= j.hidden_field :user_id, value: @user.id %>
 					<% end %>
+					<%= f.submit 'チャットを始める', class: 'btn btn-primary' %>
 				<% end %>
 			<% end %>
 		<% end %>
-		<!-- /チャット機能 -->
-	</div>
+	<% end %>
 </div>

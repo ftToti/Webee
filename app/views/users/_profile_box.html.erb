@@ -22,7 +22,7 @@
 			<div>
 				<label>希望報酬：</label>
 				<% unless user.desired_reward.blank? %>
-					¥ <%= user.desired_reward %> 〜
+					¥ <%= user.desired_reward.to_s(:delimited) + "円" %> 〜
 				<% else %>
 					設定されていません
 				<% end %>
@@ -46,13 +46,16 @@
 			<label>ひとこと：</label>
 			<%= user.strong_point %>
 		</div>
-		<% if user == current_user %>
-			<%= link_to 'プロフィールを編集する', edit_user_path(user), class: 'btn btn-primary' %>
-		<% else %>
-			<% if current_user.following?(user) %>
-				<%= link_to 'フォローを解除する', relationship_path(user), method: :delete, class: 'btn btn-primary' %>
+
+		<% if user_signed_in? %>
+			<% if user == current_user %>
+				<%= link_to 'プロフィールを編集する', edit_user_path(user), class: 'btn btn-info' %>
 			<% else %>
-				<%= link_to 'フォローする', relationships_path(id: user), method: :post, class: 'btn btn-primary' %>
+				<% if current_user.following?(user) %>
+					<%= link_to 'フォローを解除する', relationship_path(user), method: :delete, class: 'btn btn-primary' %>
+				<% else %>
+					<%= link_to 'フォローする', relationships_path(id: user), method: :post, class: 'btn btn-primary' %>
+				<% end %>
 			<% end %>
 		<% end %>
 	</div>

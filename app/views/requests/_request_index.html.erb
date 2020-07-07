@@ -1,0 +1,47 @@
+<div style="width: 80%; margin: 0 auto;">
+	<!-- タイトル -->
+	<%= link_to request_path(request), class: 'h5' do %>
+		<strong><%= request.title %></strong>
+	<% end %>
+	<div class="float-right text-right">
+		<!-- 依頼者名 -->
+		依頼者：
+		<%= link_to user_path(request.user) do %>
+			<%= request.user.name %>
+		<% end %><br>
+		<!-- 募集ステータス -->
+		ステータス：
+		<% case request.status %>
+		<% when 'wanted' %>
+			募集中
+		<% when 'progress' %>
+			進行中
+		<% when 'completed' %>
+			達成済み
+		<% when 'cancel' %>
+			取り下げ
+		<% end %>
+	</div>
+	<table class="table",style="width: 100%;">
+		<tr style="width: 50%;">
+			<td style="border: none;">
+				ジャンル：<%= request.request_genre.category %>
+			</td>
+			<td style="border: none;">
+				報酬：<%= request.reward.to_s(:delimited) + "円 / 人" %>
+			</td>
+		</tr>
+		<tr style="width: 50%;">
+			<td style="border: none;">
+				求めるスキル：
+				<% request.skills.each do |necessary| %>
+					<%= necessary.item %>/
+				<% end %>
+			</td>
+			<td style="border: none;">
+				募集人数：<%= request.participants.count.to_s + " / " + request.recruiment_max.to_s + "人" %>
+			</td>
+		</tr>
+	</table>
+</div>
+<hr>

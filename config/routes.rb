@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   resources :evaluations, only: [:index, :edit, :update]
   get 'evaluations/unfinished', to: 'evaluations#unfinished', as: 'evaluations_unfinished'
 
-  resources :rooms, only: [:create, :show]
+  resources :rooms, only: [:index, :create, :show]
 
   resources :messages, only: [:create, :destroy]
 
@@ -40,16 +40,14 @@ Rails.application.routes.draw do
 
   resources :relationships, only: [:create, :destroy]
 
-  resources :scouts, only: [:index, :new, :create, :destroy]
+  resources :scouts, only: [:new, :create, :destroy]
   get 'scouts/:id/propriety', to: 'scouts#propriety', as: 'scouts_propriety'
   post 'scouts/:id/selection', to: 'scouts#selection', as: 'scouts_selection'
 
-  resources :entries, only: [:index, :create, :destroy]
+  resources :entries, only: [:create, :destroy]
   get 'entries/:id/propriety', to: 'entries#propriety', as: 'entries_propriety'
   post 'entries/:id/selection', to: 'entries#selection', as: 'entries_selection'
 
   resources :notifications, only: [:index]
-
-  resources :participants, only: [:index]
 
 end

@@ -1,8 +1,15 @@
 class UsersController < ApplicationController
+	before_action :authenticate_user!, only: [:edit, :update]
 	def index
-		if params[:version] == 'favorite'
+		if params[:version] == 'entry'
 			@request = Request.find(params[:id])
-			@users = @request.favorited_users
+			@users = @request.entry_users
+		elsif params[:version] == 'scout'
+			@request = Request.find(params[:id])
+			@users = @request.scout_users
+		elsif params[:version] == 'participant'
+			@request = Request.find(params[:id])
+			@users = @request.participant_users
 		else
 			@users = User.all
 		end
@@ -10,21 +17,22 @@ class UsersController < ApplicationController
 
 	def show
 		@user = User.find(params[:id])
-
 		# チャット機能
 		if user_signed_in?
-			@currentUserJoin = Join.where(user_id: current_user.id)
-			@userJoin = Join.where(user_id: @user.id)
+			@current_user_join = Join.where(user_id: current_user.id)
+			@user_join = Join.where(user_id: @user.id)
 			if @user.id != current_user.id
-				@currentUserJoin.each do |cj|
-					@userJoin.each do |uj|
+				@current_user_join.each do |cj|
+					@user_join.each do |uj|
+						# すでにチャットルームが作成されていたらidを取得
 						if cj.room_id == uj.room_id
-							@haveRoom = true
-							@roomId = cj.room_id
+							@have_room = true
+							@room_id = cj.room_id
 						end
 					end
 				end
-				if @haveRoom != true
+				# チャットルームがなければ作成する
+				if @have_room != true
 					@room = Room.new
 					@join = Join.new
 				end
@@ -38,16 +46,19 @@ class UsersController < ApplicationController
 
 	def update
 		@user = User.find(params[:id])
-		@user.update(user_params)
-		SkillSet.where(possible_id: @user.id).destroy_all
-		SkillSet.where(good_id: @user.id).destroy_all
-		params[:possible][:skill_ids].each do |p|
-			SkillSet.create!(possible_id: @user.id, skill_id: p)
+		if @user.update(user_params)
+			SkillSet.where(possible_id: @user.id).destroy_all
+			SkillSet.where(good_id: @user.id).destroy_all
+			params[:possible][:skill_ids].each do |p|
+				SkillSet.create!(possible_id: @user.id, skill_id: p)
+			end
+			params[:good][:skill_ids].each do |g|
+				SkillSet.create!(good_id: @user.id, skill_id: g)
+			end
+			redirect_to user_path(@user), notice: 'プロフィールを編集しました'
+		else
+			render 'edit'
 		end
-		params[:good][:skill_ids].each do |g|
-			SkillSet.create!(good_id: @user.id, skill_id: g)
-		end
-		redirect_to user_path(@user)
 	end
 
 	def relationships
@@ -56,15 +67,12 @@ class UsersController < ApplicationController
 		@followed = @user.followed_users
 	end
 
-	def favorites
-	end
-
 	def evaluations
 		@user = User.find(params[:id])
 	end
 
 	private
 	def user_params
-		params.require(:user).permit(:name, :desired_reward, :strong_point, :introduction, :profile_image, :status)
+		params.require(:user).permit(:name, :email, :desired_reward, :strong_point, :introduction, :profile_image)
 	end
 end
