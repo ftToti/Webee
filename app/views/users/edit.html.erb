@@ -19,14 +19,14 @@
 	</tr>
 	<tr>
 		<th><%= f.label :introduction %></th>
-		<td><%= f.text_area :introduction %></td>
+		<td><%= f.text_area :introduction, placeholder: '自己紹介を入力', style: 'width: 30em; height: 30em;' %></td>
 	</tr>
 	<tr>
 		<th><%= f.label :profile_image %></th>
 		<td><%= f.attachment_field :profile_image %></td>
 	</tr>
 	<tr>
-		<th><%= f.label '使えるスキル' %></th>
+		<th><%= f.label :使えるスキル %></th>
 		<td>
 			<% Skill.all.each do |s| %>
 				<% if SkillSet.exists?(possible_id: @user.id, skill_id: s.id) %>
@@ -39,7 +39,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th><%= f.label '得意なスキル' %></th>
+		<th><%= f.label :得意なスキル %></th>
 		<td>
 			<% Skill.all.each do |s| %>
 				<% if SkillSet.exists?(good_id: @user.id, skill_id: s.id) %>
@@ -52,5 +52,5 @@
 		</td>
 	</tr>
 </table>
-<%= f.submit %>
+<%= f.submit '変更を保存する', class: 'btn btn-success' %>
 <% end %>

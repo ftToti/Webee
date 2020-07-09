@@ -39,7 +39,13 @@ header a {
 }
 
 .sidebar {
-	background-color: rgba(200,255,100,0.4);
+}
+
+.ad {
+	background-color: rgb(0,255,255);
+	width: 95%;
+	height: 15em;
+	margin: 2em auto;
 }
 
 #notice {
@@ -51,20 +57,14 @@ header a {
 }
 
 .header-circle {
-	position: relative;
 	width: 2.5em;
 	height: 2.5em;
 }
 
 .n-icon {
-	position: absolute;
-	padding-top: 0;
-	padding-left: 0;
+	padding-top: 10px;
 }
-
 .n-circle {
-	position: absolute;
-	padding-left: 0rem;
-	padding-top: 0rem;
+	padding: 15px 0 0 20px;
 	color: #efa04c;
 }

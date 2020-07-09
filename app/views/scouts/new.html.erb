@@ -6,13 +6,35 @@
 <div>
 	<%= form_with model: @scout, local: true do |f| %>
 		<% current_user.requests.where(status: 'wanted').each do |request| %>
-			<div>
-				<%= f.radio_button :request_id, request.id %>
-				<%= f.label request.title %>
-			</div>
+			<% if Scout.where(["user_id = ? and request_id = ?", @user.id, request.id]).exists? %>
+				<div>
+					<%= f.label request.title %>
+					<%= "[すでにスカウトしています]" %>
+				</div>
+			<% elsif Entry.where(["user_id = ? and request_id = ?", @user.id, request.id]).exists? %>
+				<div>
+					<%= f.label request.title %>
+					<%= "[すでに応募が届いています]" %>
+				</div>
+			<% elsif Participant.where(["user_id = ? and request_id = ?", @user.id, request.id]).exists? %>
+				<div>
+					<%= f.label request.title %>
+					<%= "[すでに参加しています]" %>
+				</div>
+			<% else %>
+				<div>
+					<%= f.radio_button :request_id, request.id %>
+					<%= f.label request.title %>
+				</div>
+				<% @active_scout = true %>
+			<% end %>
 		<% end %>
-		<%= f.text_area :messsage, size: '80x10', placeholder: "スカウトメッセージを入力" %>
-		<%= f.hidden_field :user_id, :value => @user.id %>
-		<%= f.submit 'スカウトを送る', class: 'btn btn-sm btn-primary' %>
+		<% if @active_scout == true %>
+			<%= f.text_area :message, size: '80x10', placeholder: "スカウトメッセージを入力" %>
+			<%= f.hidden_field :user_id, :value => @user.id %>
+			<%= f.submit 'スカウトを送る', class: 'btn btn-sm btn-primary' %>
+		<% else %>
+			<div class="text-center h5">スカウトできる依頼がありません</div>
+		<% end %>
 	<% end %>
 </div>

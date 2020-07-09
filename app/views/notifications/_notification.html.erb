@@ -9,21 +9,22 @@
 			さん
 		</span>
 
+		<!-- フォロー通知 -->
 		<% case notification.action %>
 		<% when 'follow' then %>
 			があなたをフォローしました
+
+		<!-- スカウト通知 -->
 		<% when 'scout' then %>
 			から
 			<%= link_to notification.request.title, request_path(notification.request) %>
 			へのスカウトが届きました
+
+		<!-- 応募通知 -->
 		<% when 'entry' then %>
 			が
 			<%= link_to notification.request.title, request_path(notification.request) %>
 			に応募しました
-		<% when 'message' then %>
-			から
-			<%= link_to '新規メッセージ', room_path(notification.message.room) %>
-			が届いています
 		<% end %>
 	</div>
 	<div class="small text-muted text-right">

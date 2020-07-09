@@ -9,6 +9,9 @@
 	<% elsif params[:version] == 'participant' %>
 		<h3>参加しているユーザー</h3>
 		<h5><%= @request.title %></h5>
+	<% elsif params[:version] == 'evaluation' %>
+		<h3>参加したユーザー</h3>
+		<h5><%= @request.title %></h5>
 	<% else %>
 		<h3>すべてのユーザー</h3>
 	<% end %>
@@ -17,9 +20,9 @@
 
 <!-- <プロフィール一覧> -->
 <div class="d-flex flex-wrap">
-	<% @users.each do |u| %>
+	<% @users.each do |user| %>
 		<div style="width:50%;">
-			<%= render 'users/profile_box', user: u %>
+			<%= render 'users/profile_box', user: user, request: @request %>
 		</div>
 	<% end %>
 </div>

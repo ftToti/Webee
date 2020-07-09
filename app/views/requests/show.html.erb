@@ -1,106 +1,36 @@
 <div style="width: 80%; margin: 0 auto;">
 
-	<h2><%= @request.title %></h2>
-
 	<!-- ステータス更新ボタン -->
 	<% if @request.user == current_user %>
 		<% if @request.status == 'wanted' %>
 			<%= link_to '依頼を編集する', edit_request_path(@request), class: 'btn btn-sm btn-info' %>
 			<%= link_to '募集を締め切る', request_path(id: @request, status: "progress"), method: :patch, class: 'btn btn-sm btn-primary' %>
+			<%= link_to '依頼を取り下げる', request_path(id: @request, status: "cancel"), method: :patch, class: 'btn btn-sm btn-danger' %>
 		<% elsif @request.status == 'progress' %>
 			<%= link_to '依頼を完了する', request_path(id: @request, status: "completed"), method: :patch, class: 'btn btn-sm btn-success' %>
-		<% elsif @request.status == 'completed' %>
-			<%= link_to '募集中に戻る(仮)', request_path(id: @request, status: "wanted"), method: :patch, class: 'btn btn-sm btn-primary' %>
-		<% elsif @request.status == 'cancel' %>
-			<%= link_to '募集中に戻る(仮)', request_path(id: @request, status: "wanted"), method: :patch, class: 'btn btn-sm btn-primary' %>
-		<% end %>
-		<% if @request.status == 'wanted' %>
-			<%= link_to '依頼を取り下げる', request_path(id: @request, status: "cancel"), method: :patch, class: 'btn btn-sm btn-danger' %>
 		<% end %>
 	<% end %>
-
-
-	<div class="content_box">
-		<div class="content_box_top">
-			<span class="h3">依頼者：<%= @request.user.name %></span>
-
-			<!-- お気に入りボタン -->
-			<% if user_signed_in? %>
-				<div class="float-right">
-					<% if current_user.favorited_by?(@request) %>
-						<%= link_to image_tag("star-on.png"), favorite_path(@request), method: :delete %>
-					<% else %>
-						<%= link_to image_tag("star-off.png"), favorites_path(id: @request), method: :post %>
-					<% end %>
-				</div>
-			<% end %>
-
-			<div>
-				<label>投稿日時</label>
-				<%= @request.created_at.strftime('%Y-%m-%d %H:%M') %>
-				<label>募集締切日時</label>
-				<%= @request.recruiment_end.strftime('%Y-%m-%d %H:%M') %>
-				<label>希望納期</label>
-				<%= @request.delivery_date.strftime('%Y-%m-%d %H:%M') %>
-			</div>
-		</div>
-		<div class="container">
-			<div class="row">
-				<div class='col-3 content_box_bottom'>
-					<label>ステータス</label><br>
-					<% case @request.status %>
-					<% when 'wanted' %>
-						募集中
-					<% when 'progress' %>
-						進行中
-					<% when 'completed' %>
-						達成済み
-					<% when 'cancel' %>
-						取り下げ
-					<% end %>
-				</div>
-				<div class='col-3 content_box_bottom'>
-					<label>報酬</label><br>
-					<%= @request.reward.to_s(:delimited) + "円 / 人" %>
-				</div>
-				<div class='col-3 content_box_bottom'>
-					<label>募集締切日</label><br>
-					<%= @sa %> 日後
-				</div>
-				<div class='col-3 content_box_bottom'>
-					<label>参加人数</label><br>
-					<%= @request.participants.count %> / <%= @request.recruiment_max %> 人
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="h5">
-		<label>求めるスキル：</label>
-		<% @request.skills.each do |necessary| %>
-			<%= necessary.item + " / " %>
-		<% end %>
-	</div>
-
-	<div>
-		<label class="h4">依頼詳細</label>
-		<%= simple_format(@request.content) %>
-	</div>
-
+	<!-- 依頼詳細 -->
+	<%= render 'request_content', request: @request %>
+	<!-- リンク -->
 	<% if @request.wanted? %>
-		<%= link_to '応募者一覧へ', users_path(id: @request, version: 'entry') %>
-		<%= link_to 'スカウト中のユーザー一覧へ', users_path(id: @request, version: 'scout') %>
+		<%= link_to '応募者一覧へ', users_path(id: @request, version: 'entry'), class: 'btn btn-primary' %>
+		<%= link_to 'スカウト中のユーザー一覧へ', users_path(id: @request, version: 'scout'), class: 'btn btn-primary' %>
 	<% end %>
-	<%= link_to '参加者一覧へ', users_path(id: @request, version: 'participant') %>
+	<% if @request.wanted? || @request.progress? %>
+		<%= link_to '参加者一覧へ', users_path(id: @request, version: 'participant'), class: 'btn btn-primary' %>
+	<% elsif @request.completed? %>
+		<%= link_to '参加したユーザー一覧へ', users_path(id: @request, version: 'evaluation'), class: 'btn btn-primary' %>
+	<% end %>
 
 	<% if user_signed_in? %>
 		<% if @request.wanted? %>
 			<% if current_user.participants.where(request_id: params[:id]).exists? %>
-				参加済みです
+				参加しています
 			<% elsif current_user.scouts.where(request_id: params[:id]).exists? %>
-				<%= link_to 'スカウトが届いています', scouts_propriety_path(current_user.scouts.where(request_id: params[:id])) %>
+				<%= link_to 'スカウトが届いています', scout_path(@scout), class: 'btn btn-danger' %>
 			<% elsif current_user.entries.where(request_id: params[:id]).exists? %>
-				<%= link_to '応募を取り消す', entry_path(@request), method: :delete %>
+				<%= link_to '応募を取り消す', entry_path(@request), method: :delete, class: 'btn btn-danger' %>
 			<% elsif current_user.requests.include?(@request) == false %>
 				<h4>応募フォーム</h4>
 				<%= form_with model: @entry, url: entries_path, method: :post, local: true do |f| %>

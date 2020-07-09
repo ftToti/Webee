@@ -2,10 +2,10 @@
 	<h3>未完了の評価<%= Evaluation.where(request_id: current_user.requests.ids, status: 'yet').count %>件</h3>
 
 	<% Evaluation.where(request_id: current_user.requests.ids, status: 'yet').each do |eva| %>
-		<div style="border-top: solod 1px;">
-			<%= eva.request.title %>
-			<%= eva.user.name %>
-			<%= link_to '評価する', edit_evaluation_path(eva), class: 'btn btn-success' %>
+		<div>
+			ユーザー名：<%= eva.user.name %>
+			依頼タイトル：<%= eva.request.title %>
+			<%= link_to '評価を入力する', edit_evaluation_path(eva) %>
 		</div>
 	<% end %>
 <% else %>

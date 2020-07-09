@@ -4,10 +4,10 @@
 <% @user.evaluations.each do |eva| %>
 	<div>
 		<% if eva.done? %>
+            <label>カテゴリ：</label>
+            <%= eva.request.request_genre.category %><br>
+            <label>タイトル：</label>
 			<%= eva.request.title %>
-			<%= eva.request.request_genre.category %>
-        	<%= eva.rate %>
-        	<%= eva.comment %>
         	<!--星評価-->
         	<div id="star-rate-<%= eva.id %>"></div>
         	<script>
@@ -22,6 +22,8 @@
         		});
         	</script>
         	<!--/星評価-->
+            <labe>依頼者からのコメント：</labe>
+            <%= eva.comment %>
         <% else %>
         	<h5>まだ評価されていません</h5>
         <% end %>

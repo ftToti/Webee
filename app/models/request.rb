@@ -12,6 +12,7 @@ class Request < ApplicationRecord
 	has_many :necessary, class_name: 'SkillSet', foreign_key: 'necessary_id', dependent: :destroy
 	has_many :skills, through: :necessary
 	has_many :evaluations, dependent: :destroy
+	has_many :evaluation_users, through: :evaluations, source: :user
 	enum status: {wanted: 0, progress: 1, completed: 2, cancel: 3}
 	# wanted => 募集中(依頼内容の編集可能、応募可能、スカウト可能、progressへ移行可能、cancelへ移行可能)
 	# progress => 進行中(応募者削除、スカウト者削除、completedへ移行可能)

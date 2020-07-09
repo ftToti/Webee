@@ -3,6 +3,12 @@
 	このサイトはWebサイト作成の依頼・受注ができるWebプログラマーのためのマッチングサイトです。
 </p>
 
+<% if user_signed_in? %>
+	<% if current_user.scout_requests.exists? %>
+		<%= link_to 'スカウトが届いています', requests_path(id: current_user.id, version: 'scout') %>
+	<% end %>
+<% end %>
+
 <h3 class='top_contents'>依頼をさがす</h3>
 	<%= link_to 'すべての依頼', requests_path %>
 	<%= link_to '募集中の依頼', requests_path(version: 'wanted') %>

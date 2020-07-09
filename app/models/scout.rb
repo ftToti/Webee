@@ -1,7 +1,6 @@
 class Scout < ApplicationRecord
 	belongs_to :user
 	belongs_to :request
-	has_many :notifications, dependent: :destroy
 
 	validates :request_id, uniqueness: { scope: :user_id }
 

@@ -2,24 +2,27 @@
 <%= render 'layouts/error_messages', model: f.object %>
 <table class="table">
 	<tr>
-		<th><%= f.label :category %></th>
+		<th><%= f.label :カテゴリー %></th>
 		<td>
 			<% RequestGenre.all.each do |genre| %>
 				<%= f.radio_button :request_genre_id, genre.id %>
 				<%= f.label genre.category %>
+				<% if genre.id % 3 == 0 %>
+					<br>
+				<% end %>
 			<% end %>
 		</td>
 	</tr>
 	<tr>
 		<th><%= f.label :title %></th>
-		<td><%= f.text_field :title, size: '100' %></td>
+		<td><%= f.text_field :title, style: 'width: 80%;' %></td>
 	</tr>
 	<tr>
 		<th><%= f.label :content %></th>
-		<td><%= f.text_area :content, size: '100x10' %></td>
+		<td><%= f.text_area :content, style: 'width: 80%; height: 30em;' %></td>
 	</tr>
 	<tr>
-		<th><%= f.label :necessary %></th>
+		<th><%= f.label :必要なスキル %></th>
 		<td>
 			<% Skill.all.each do |skill| %>
 				<% if SkillSet.exists?(necessary_id: @request.id, skill_id: skill.id) %>
@@ -48,5 +51,5 @@
 		<td><%= f.number_field :recruiment_max %></td>
 	</tr>
 </table>
-<%= f.submit %>
+<%= f.submit '変更を保存する', class: 'btn btn-success' %>
 <% end %>

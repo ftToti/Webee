@@ -1,9 +1,10 @@
 <h3>評価を入力</h3>
 
-<%= @eva.user.name %>
-<%= @eva.request.title %>
+<%= render 'users/profile_box', user: @eva.user %>
+<%= render 'requests/request_content', request: @eva.request %>
 
 <%= form_with model: @eva, local: true do |f| %>
+<%= render 'layouts/error_messages', model: f.object %>
   <!-- 評価 -->
   <div class="" id="star">
     <%= f.label :rate,'評価 ', class:'' %>
@@ -22,7 +23,7 @@
   });
   </script>
 
-  <%= f.text_field :comment %>
+  <%= f.text_area :comment, size: '80x10', placeholder: "評価メッセージを入力" %>
   <%= f.hidden_field :status, value: :done %>
-  <%= f.submit %>
+  <%= f.submit '評価を確定する', class: 'btn btn-primary' %>
  <% end %>

@@ -8,17 +8,16 @@ class ScoutsController < ApplicationController
 	def create
 		scout = Scout.new(scout_params)
 		if scout.save!
+			# 通知を作成
 			scout.create_notification_scout!(current_user)
 			redirect_to user_path(scout.user), notice: 'スカウトが完了しました'
+		else
+			flash[:alert] = 'スカウトに失敗しました'
+			render 'new'
 		end
 	end
 
-	def destroy
-		flash[:notice] = 'スカウトを削除しました'
-		redirect_back(fallback_location: root_path)
-	end
-
-	def propriety
+	def show
 		@scout = Scout.find(params[:id])
 		@user = @scout.user
 		@request = @scout.request
@@ -27,6 +26,11 @@ class ScoutsController < ApplicationController
 		d2 = Date.today
 		# 募集締切までの日付
 		@sa = (d1 -d2).to_i
+	end
+
+	def destroy
+		flash[:notice] = 'スカウトを削除しました'
+		redirect_back(fallback_location: root_path)
 	end
 
 	def selection
@@ -50,6 +54,6 @@ class ScoutsController < ApplicationController
 
 	private
 	def scout_params
-		params.require(:scout).permit(:user_id, :request_id)
+		params.require(:scout).permit(:user_id, :request_id, :message)
 	end
 end

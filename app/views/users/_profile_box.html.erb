@@ -57,6 +57,9 @@
 					<%= link_to 'フォローする', relationships_path(id: user), method: :post, class: 'btn btn-primary' %>
 				<% end %>
 			<% end %>
+			<% if params[:version] == 'entry' %>
+				<%= link_to '参加可否へ', entry_path(Entry.find_by(user_id: user.id, request_id: request.id)), class: 'btn btn-danger' %>
+			<% end %>
 		<% end %>
 	</div>
 </div>

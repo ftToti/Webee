@@ -40,12 +40,10 @@ Rails.application.routes.draw do
 
   resources :relationships, only: [:create, :destroy]
 
-  resources :scouts, only: [:new, :create, :destroy]
-  get 'scouts/:id/propriety', to: 'scouts#propriety', as: 'scouts_propriety'
+  resources :scouts, only: [:new, :create, :show, :destroy]
   post 'scouts/:id/selection', to: 'scouts#selection', as: 'scouts_selection'
 
-  resources :entries, only: [:create, :destroy]
-  get 'entries/:id/propriety', to: 'entries#propriety', as: 'entries_propriety'
+  resources :entries, only: [:create, :show, :destroy]
   post 'entries/:id/selection', to: 'entries#selection', as: 'entries_selection'
 
   resources :notifications, only: [:index]

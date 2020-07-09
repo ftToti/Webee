@@ -27,5 +27,5 @@
 <!-- 依頼一覧 -->
 <hr>
 <% @requests.each do |request| %>
-	<%= render 'request_index', request: request %>
+	<%= render 'request_index', user: @user, request: request %>
 <% end %>

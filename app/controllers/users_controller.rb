@@ -10,6 +10,9 @@ class UsersController < ApplicationController
 		elsif params[:version] == 'participant'
 			@request = Request.find(params[:id])
 			@users = @request.participant_users
+		elsif params[:version] == 'evaluation'
+			@request = Request.find(params[:id])
+			@users = @request.evaluation_users
 		else
 			@users = User.all
 		end

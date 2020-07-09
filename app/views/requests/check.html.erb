@@ -3,7 +3,7 @@
 <%= form_with model: @request, local: true do |f| %>
 <table class="table">
 	<tr>
-		<th><%= f.label 'カテゴリー' %></th>
+		<th style="width: 20%;"><%= f.label 'カテゴリー' %></th>
 		<td><%= @request.request_genre.category %></td>
 		<%= f.hidden_field :request_genre_id, :value => @request.request_genre.id %>
 	</tr>
@@ -28,24 +28,40 @@
 	</tr>
 	<tr>
 		<th><%= f.label '報酬' %></th>
-		<td><%= @request.reward.to_s(:delimited) + "円 / 人" %></td>
-		<%= f.hidden_field :reward, :value => @request.reward %>
+		<td>
+			<% if @request.reward.present? %>
+				<%= @request.reward.to_s(:delimited) + "円 / 人" %>
+				<%= f.hidden_field :reward, :value => @request.reward %>
+			<% end %>
+		</td>
 	</tr>
 	<tr>
 		<th><%= f.label '募集締切日' %></th>
-		<td><%= @request.recruiment_end.strftime('%Y-%m-%d %H:%M') %></td>
-		<%= f.hidden_field :recruiment_end, :value => @request.recruiment_end %>
+		<td>
+			<% if @request.recruiment_end.present? %>
+				<%= @request.recruiment_end.strftime('%Y-%m-%d %H:%M') %>
+				<%= f.hidden_field :recruiment_end, :value => @request.recruiment_end %>
+			<% end %>
+		</td>
 	</tr>
 	<tr>
 		<th><%= f.label '希望納期' %></th>
-		<td><%= @request.delivery_date.strftime('%Y-%m-%d %H:%M') %></td>
-		<%= f.hidden_field :delivery_date, :value => @request.delivery_date %>
+		<td>
+			<% if @request.delivery_date.present? %>
+				<%= @request.delivery_date.strftime('%Y-%m-%d %H:%M') %>
+				<%= f.hidden_field :delivery_date, :value => @request.delivery_date %>
+			<% end %>
+		</td>
 	</tr>
 	<tr>
 		<th><%= f.label '募集人数' %></th>
-		<td><%= @request.recruiment_max %> 人</td>
-		<%= f.hidden_field :recruiment_max, :value => @request.recruiment_max %>
+		<td>
+			<% if @request.recruiment_max.present? %>
+				<%= @request.recruiment_max %> 人
+				<%= f.hidden_field :recruiment_max, :value => @request.recruiment_max %>
+			<% end %>
+		</td>
 	</tr>
 </table>
-<%= f.submit '投稿を確定する', class: 'btn btn-sm btn-primary' %>
+<%= f.submit '投稿を確定する', class: 'btn btn-primary' %>
 <% end %>

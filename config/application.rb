@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module WebPro
+module Webee
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
@@ -17,6 +17,8 @@ module WebPro
     # the framework and any gems in your application.
     config.web_console.whitelisted_ips = '10.0.2.2'
 
-    config.time_zone = 'Tokyo'
+    config.time_zone = 'Tokyo' # 表示を日本時間にするため
+
+    config.i18n.default_locale = :ja # エラーメッセージを日本語化するため
   end
 end

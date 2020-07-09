@@ -1,0 +1,28 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+      request: 依頼
+      evaluation: 評価
+
+    attributes:
+      user:
+        name: ニックネーム
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: 確認用パスワード
+        desired_reward: 希望報酬
+        strong_point: ひとこと
+        introduction: 自己紹介
+        profile_image: プロフィール画像
+
+      request:
+        title: タイトル
+        content: 依頼内容
+        reward: 報酬
+        recruiment_end: 募集締切日
+        delivery_date: 希望納期
+        recruiment_max: 募集予定人数
+
+      evaluation:
+        rate: 評価

@@ -1,0 +1,13 @@
+<h3>応募しているユーザー</h3>
+<%= render 'users/profile_box', user: @user %>
+<h3>応募している依頼</h3>
+<%= render 'requests/request_content', request: @request %>
+<% unless @entry.message.blank? %>
+	<h3>メッセージ</h3>
+	<%= @entry.message %>
+<% end %>
+
+<div>
+	<%= link_to '参加を拒否する', entries_selection_path(id: @entry, version: 'deny'), method: :post, class: 'btn btn-danger' %>
+	<%= link_to '参加を許可する', entries_selection_path(id: @entry, version: 'allow'), method: :post, class: 'btn btn-primary' %>
+</div>

@@ -4,6 +4,7 @@ class EntriesController < ApplicationController
 		entry = Entry.new(entry_params)
 		entry.user_id = current_user.id
 		if entry.save
+			# 通知を作成
 			entry.create_notification_entry!(current_user)
 			redirect_to request_path(entry.request), notice: '応募が完了しました'
 		else
@@ -13,15 +14,7 @@ class EntriesController < ApplicationController
 		end
 	end
 
-	def destroy
-		entry = current_user.entries.find_by(request_id: params[:id])
-		if entry.destroy
-			flash[:notice] = '応募を取り消しました'
-			redirect_back(fallback_location: root_path)
-		end
-	end
-
-	def propriety
+	def show
 		@entry = Entry.find(params[:id])
 		@user = @entry.user
 		@request = @entry.request
@@ -30,6 +23,14 @@ class EntriesController < ApplicationController
 		d2 = Date.today
 		# 募集締切までの日付
 		@sa = (d1 -d2).to_i
+	end
+
+	def destroy
+		entry = current_user.entries.find_by(request_id: params[:id])
+		if entry.destroy
+			flash[:notice] = '応募を取り消しました'
+			redirect_back(fallback_location: root_path)
+		end
 	end
 
 	def selection
@@ -47,12 +48,12 @@ class EntriesController < ApplicationController
 		elsif params[:version] == 'deny'
 			# 応募者から削除
 			@entry.destroy
-			redirect_to user_path(curent_user), notice: '参加を拒否しました'
+			redirect_to user_path(current_user), notice: '参加を拒否しました'
 		end
 	end
 
 	private
 	def entry_params
-		params.require(:entry).permit(:message, :request_id)
+		params.require(:entry).permit(:message, :request_id, :message)
 	end
 end

@@ -8,6 +8,8 @@ class EvaluationsController < ApplicationController
 		@eva = Evaluation.find(params[:id])
 		if @eva.update(evaluation_params)
 			redirect_to evaluations_unfinished_path, notice: '評価が完了しました'
+		else
+			render :edit
 		end
 	end
 

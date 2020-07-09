@@ -1,6 +1,6 @@
 <h3><%= @user.name %></h3>
 <div class="row">
-
+	<!-- フォロー表示 -->
 	<div class="col-6">
 		<h4 style="text-align: center;">
 			フォロー <%= @follow.count %> 人
@@ -13,7 +13,7 @@
 			<% end %>
 		</div>
 	</div>
-
+	<!-- フォロワー表示 -->
 	<div class="col-6">
 		<h4 style="text-align: center;">
 			フォロワー <%= @followed.count %> 人

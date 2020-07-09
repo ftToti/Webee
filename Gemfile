@@ -78,4 +78,6 @@ gem 'jquery-rails'
 
 gem 'faker' #ダミーデータ作成
 
-gem 'font-awesome-sass', '~> 5.4.1'
+gem 'font-awesome-sass', '~> 5.4.1' # アイコン取得
+
+gem 'rails-i18n'

@@ -1,0 +1,13 @@
+<h3>マイプロフィール</h3>
+<%= render 'users/profile_box', user: @user %>
+<h3>スカウトされている依頼</h3>
+<%= render 'requests/request_content', request: @request %>
+<% unless @scout.message.blank? %>
+	<h3>メッセージ</h3>
+	<%= @scout.message %>
+<% end %>
+
+<div>
+	<%= link_to '参加しない', scouts_selection_path(id: @scout, version: 'deny'), method: :post, class: 'btn btn-danger' %>
+	<%= link_to '参加する', scouts_selection_path(id: @scout, version: 'allow'), method: :post, class: 'btn btn-primary' %>
+</div>

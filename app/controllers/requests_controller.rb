@@ -17,8 +17,8 @@ class RequestsController < ApplicationController
 		elsif params[:version] == 'wanted'
 			@requests = Request.where(status: 'wanted')
 		elsif params[:version] == 'category'
-			@genre = RequestGenre.find(params[:id])
-			@requests = @genre.requests
+			genre = RequestGenre.find(params[:id])
+			@requests = genre.requests
 		elsif params[:version] == 'search'
 			@requests = Request.where(['title Like ?', "%#{params[:keyword]}%"])
 		else
@@ -34,14 +34,15 @@ class RequestsController < ApplicationController
 
 	def check
 		@request = Request.new(request_params)
-		@skills = Skill.find(params[:necessary][:skill_ids])
 		if params[:request][:request_genre_id].blank?
-			flash[:alert] = '依頼ジャンルを選択してください'
-			render :new
+			flash.now[:alert] = '依頼ジャンルを選択してください'
+			return render 'new'
 		end
-		if params[:necessary][:skill_ids] == []
-			flash[:alert] = '求めるスキルを選択してください'
-			render :new
+		if params[:necessary].nil?
+			flash.now[:alert] = '必要なスキルを選択してください'
+			return render 'new'
+		else
+			@skills = Skill.find(params[:necessary][:skill_ids])
 		end
 	end
 
@@ -54,6 +55,7 @@ class RequestsController < ApplicationController
 			end
 			redirect_to request_path(@request), notice: '依頼を投稿しました'
 		else
+			flash[:alert] = '投稿に失敗しました'
 			render :new
 		end
 	end
@@ -61,6 +63,7 @@ class RequestsController < ApplicationController
 	def show
 		@request = Request.find(params[:id])
 		@skill = @request.necessary
+		@scout = current_user.scouts.find_by(request_id: @request.id)
 		@entry = Entry.new
 		@favorite = Favorite.new
 		# 募集締切までの日付を計算
@@ -77,21 +80,25 @@ class RequestsController < ApplicationController
 	def update
 		@request = Request.find(params[:id])
 		# binding.pry
+		# ステータスを募集中に戻す
 		if params[:status] == 'wanted'
 			@request.wanted!
 			redirect_to request_path(@request), notice: 'ステータスを更新しました'
+		# ステータスを進行中に更新
 		elsif params[:status] == 'progress'
 			@request.progress!
 			Entry.where(request_id: @request.id).destroy_all
 			Scout.where(request_id: @request.id).destroy_all
 			redirect_to request_path(@request), notice: 'ステータスを更新しました'
+		# ステータスを完了に更新
 		elsif params[:status] == 'completed'
 			@request.completed!
 			@request.participants.each do |p|
-				Evaluation.create!(user_id: p.user_id, request_id: p.request_id)
+				Evaluation.create!(user_id: p.user_id, request_id: p.request_id, rate: 0.5)
 				p.destroy
 			end
 			redirect_to request_path(@request), notice: 'ステータスを更新しました'
+		# ステータスをキャンセルに更新(依頼を取り下げる)
 		elsif params[:status] == 'cancel'
 			@request.cancel!
 			Entry.where(request_id: @request.id).destroy_all

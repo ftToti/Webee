@@ -2,7 +2,7 @@
 <%= render 'layouts/error_messages', model: f.object %>
 <table class="table">
 	<tr>
-		<th><%= f.label :category %></th>
+		<th><%= f.label :カテゴリー %></th>
 		<td>
 			<% RequestGenre.all.each do |genre| %>
 				<%= f.radio_button :request_genre_id, genre.id %>
@@ -15,14 +15,37 @@
 	</tr>
 	<tr>
 		<th><%= f.label :title %></th>
-		<td><%= f.text_field :title, size: '100' %></td>
+		<td><%= f.text_field :title, style: 'width: 80%;' %></td>
 	</tr>
 	<tr>
 		<th><%= f.label :content %></th>
-		<td><%= f.text_area :content, size: '100x10' %></td>
+		<td><%= f.text_area :content, style: 'width: 80%; height: 30em;',
+		placeholder:
+"
+書き方の例）
+
+【 概要 】
+人材会社のコーポレートサイト制作
+
+【 依頼内容 】
+・依頼工程：デザイン、コーディング、レスポンシブ対応、SEO対策
+・作業ボリューム：◯ページ程度 など
+
+【 デザインイメージ 】
+・ターゲット層：20〜40代ビジネスマン
+・雰囲気：シンプル、スタイリッシュ、フラットなデザイン
+・参考サイト： ◯◯◯のサイト / https://crowdworks.jp
+
+【 応募について 】
+・簡単な自己紹介や実績、ポートフォリオをご提示ください。
+
+ご質問がありましたら、気軽にお問い合わせください。
+応募をお待ちしております！
+"
+		%></td>
 	</tr>
 	<tr>
-		<th><%= f.label :necessary %></th>
+		<th><%= f.label :必要なスキル %></th>
 		<td><%= collection_check_boxes(:necessary, :skill_ids, Skill.all, :id, :item, include_hidden: false) %></td>
 	</tr>
 	<tr>
@@ -42,5 +65,5 @@
 		<td><%= f.number_field :recruiment_max %></td>
 	</tr>
 </table>
-<%= f.submit %>
+<%= f.submit '確認へ進む', class: 'btn btn-success' %>
 <% end %>

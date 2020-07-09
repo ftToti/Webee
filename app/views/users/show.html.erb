@@ -5,7 +5,7 @@
 	<% if @user.introduction.blank? %>
 		<div class="text-center h5">自己紹介がありません</div>
 	<% else %>
-		<%= @user.introduction %>
+		<%= simple_format(@user.introduction) %>
 	<% end %>
 </div>
 
@@ -28,7 +28,7 @@
 	<h4>【参加中の依頼】</h4>
 	<hr>
 	<% @user.participant_requests.first(3).each do |request| %>
-	<%= render 'requests/request_index', request: request %>
+	<%= render 'requests/request_index', user: @user, request: request %>
 	<% end %>
 	<% if @user.participant_requests.count >= 3 %>
 		<div class='text-right'><%= link_to 'もっと見る>>', requests_path(id: @user, version: 'participant') %></div>
@@ -41,7 +41,7 @@
 	<h4>【応募中の依頼】</h4>
 	<hr>
 	<% @user.entry_requests.first(3).each do |request| %>
-	<%= render 'requests/request_index', request: request %>
+	<%= render 'requests/request_index', user: @user, request: request %>
 	<% end %>
 	<% if @user.entry_requests.count >= 3 %>
 		<div class='text-right'><%= link_to 'もっと見る>>', requests_path(id: @user, version: 'entry') %></div>
@@ -54,9 +54,9 @@
 	<h4>【スカウトを受けている依頼】</h4>
 	<hr>
 	<% @user.scout_requests.first(3).each do |request| %>
-	<%= render 'requests/request_index', request: request %>
+	<%= render 'requests/request_index', user: @user, request: request %>
 	<% end %>
-	<% if @user.entry_requests.count >= 3 %>
+	<% if @user.scout_requests.count >= 3 %>
 		<div class='text-right'><%= link_to 'もっと見る>>', requests_path(id: @user, version: 'scout') %></div>
 	<% end %>
 <% end %>
@@ -64,7 +64,7 @@
 
 <div>
 	<%= link_to 'フォロー一覧', user_relationships_path(@user), class: 'btn btn-primary' %>
-	<%= link_to '評価一覧を見る', user_evaluations_path(@user), class: 'btn btn-primary' %>
+	<%= link_to '実績一覧を見る', user_evaluations_path(@user), class: 'btn btn-primary' %>
 
 	<% if user_signed_in? %>
 		<% if @user == current_user %>
