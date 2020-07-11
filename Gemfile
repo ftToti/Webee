@@ -80,4 +80,9 @@ gem 'faker' #ダミーデータ作成
 
 gem 'font-awesome-sass', '~> 5.4.1' # アイコン取得
 
-gem 'rails-i18n'
+gem 'rails-i18n' # エラーメッセージの日本語化
+
+gem 'dotenv-rails'
+group :production do
+  gem 'mysql2'
+end
