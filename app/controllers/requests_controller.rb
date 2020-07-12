@@ -17,8 +17,8 @@ class RequestsController < ApplicationController
 		elsif params[:version] == 'wanted'
 			@requests = Request.where(status: 'wanted')
 		elsif params[:version] == 'category'
-			genre = RequestGenre.find(params[:id])
-			@requests = genre.requests
+			@genre = RequestGenre.find(params[:id])
+			@requests = @genre.requests
 		elsif params[:version] == 'search'
 			@requests = Request.where(['title Like ?', "%#{params[:keyword]}%"])
 		else
