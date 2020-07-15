@@ -16,7 +16,7 @@
 				</span>
 				<span>
 					<label>評価：</label>
-					<%= user.evaluations.where(status: :done).sum(:rate) / user.evaluations.where(status: :done).count %>
+					<%= (user.evaluations.where(status: :done).sum(:rate) / user.evaluations.where(status: :done).count).round(1) %>
 				</span>
 			</div>
 			<div>
