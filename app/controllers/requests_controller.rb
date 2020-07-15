@@ -13,7 +13,8 @@ class RequestsController < ApplicationController
 		elsif params[:version] == 'favorite'
 			@requests = current_user.favorite_requests
 		elsif params[:version] == 'user'
-			@requests = @user.request
+			@user = User.find(params[:id])
+			@requests = @user.requests
 		elsif params[:version] == 'wanted'
 			@requests = Request.where(status: 'wanted')
 		elsif params[:version] == 'category'
