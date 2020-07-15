@@ -63,7 +63,6 @@ class RequestsController < ApplicationController
 	def show
 		@request = Request.find(params[:id])
 		@skill = @request.necessary
-		@scout = current_user.scouts.find_by(request_id: @request.id)
 		@entry = Entry.new
 		@favorite = Favorite.new
 		# 募集締切までの日付を計算

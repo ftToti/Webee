@@ -28,7 +28,7 @@
 			<% if current_user.participants.where(request_id: params[:id]).exists? %>
 				参加しています
 			<% elsif current_user.scouts.where(request_id: params[:id]).exists? %>
-				<%= link_to 'スカウトが届いています', scout_path(@scout), class: 'btn btn-danger' %>
+				<%= link_to 'スカウトが届いています', scout_path(current_user.scouts.find_by(request_id: @request.id)), class: 'btn btn-danger' %>
 			<% elsif current_user.entries.where(request_id: params[:id]).exists? %>
 				<%= link_to '応募を取り消す', entry_path(@request), method: :delete, class: 'btn btn-danger' %>
 			<% elsif current_user.requests.include?(@request) == false %>
