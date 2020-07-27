@@ -13,7 +13,7 @@ Admin.create!(
 	)
 
 #ユーザーデータ登録
-20.times do |n|
+10.times do |n|
 	d_name = Faker::Games::Pokemon.name
 	d_email = "example-#{n + 1}@aaa.com"
 	d_password ='15711571'
