@@ -52,11 +52,15 @@ class UsersController < ApplicationController
 		if @user.update(user_params)
 			SkillSet.where(possible_id: @user.id).destroy_all
 			SkillSet.where(good_id: @user.id).destroy_all
-			params[:possible][:skill_ids].each do |p|
-				SkillSet.create!(possible_id: @user.id, skill_id: p)
+			unless params[:possible].nil?
+				params[:possible][:skill_ids].each do |p|
+					SkillSet.create!(possible_id: @user.id, skill_id: p)
+				end
 			end
-			params[:good][:skill_ids].each do |g|
-				SkillSet.create!(good_id: @user.id, skill_id: g)
+			unless params[:good].nil?
+				params[:good][:skill_ids].each do |g|
+					SkillSet.create!(good_id: @user.id, skill_id: g)
+				end
 			end
 			redirect_to user_path(@user), notice: 'プロフィールを編集しました'
 		else
