@@ -108,8 +108,10 @@ class RequestsController < ApplicationController
 		else
 			@request.update!(request_params)
 			SkillSet.where(necessary_id: @request.id).destroy_all
-			params[:necessary][:skill_ids].each do |skill|
-				SkillSet.create!(necessary_id: @request.id, skill_id: skill)
+			unless params[:necessary].nil?
+				params[:necessary][:skill_ids].each do |skill|
+					SkillSet.create!(necessary_id: @request.id, skill_id: skill)
+				end
 			end
 			redirect_to request_path(@request), notice: '依頼を編集しました'
 		end
